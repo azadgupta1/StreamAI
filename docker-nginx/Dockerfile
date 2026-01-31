@@ -1,4 +1,3 @@
-# Dockerfile
 FROM alpine:3.18
 
 # versions (you can change if needed)
@@ -55,10 +54,8 @@ RUN apk del build-base wget git autoconf automake libtool && \
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # expose RTMP and HTTP (HLS)
-EXPOSE 1935 5173
+EXPOSE 1935 8080
 
 VOLUME ["/var/www/hls"]
 
 CMD ["nginx", "-g", "daemon off;"]
-
-
