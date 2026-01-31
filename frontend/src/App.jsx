@@ -8,6 +8,10 @@ import { useAuthStore } from "./store/useAuthStore";
 import StreamPlayer from "./pages/StreamPlayer";
 import toast from "react-hot-toast";
 
+import Dashboard from './pages/Dashboard';
+import StartStream from './pages/StartStream';
+import ViewStream from './pages/ViewStream';
+
 const App = () => {
   const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
 
@@ -27,7 +31,32 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/view" element={<ViewStream />} />
+          <Route path="/start" element={<StartStream />} />
+          
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+};
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          {/* <Route
             path="/"
             element={authUser ? <HomePage /> : <Navigate to="/login" />}
           />
@@ -42,15 +71,8 @@ const App = () => {
           <Route
             path="/register"
             element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
-          />
+          /> */}
           {/* <Route path="/stream/:id" element={<Stream />} /> */}
           {/* <Route path="/profile" element={<Profile />} /> */}
           {/* <Route path="/about" element={<About />} /> */}
           {/* <Route path="/landing" element={<Landing />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
-};
-
-export default App;
