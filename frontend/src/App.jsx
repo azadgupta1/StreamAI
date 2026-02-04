@@ -14,6 +14,8 @@ import Dashboard from './pages/Dashboard';
 import StartStream from './pages/StartStream';
 import ViewStream from './pages/ViewStream';
 
+import SignUp from './pages/SignUp';
+
 const App = () => {
   const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
 
@@ -33,9 +35,11 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/view" element={<ViewStream />} />
           <Route path="/start" element={<StartStream />} />
+
+          <Route path="/" element = {<SignUp/>} />
           
         </Routes>
       </BrowserRouter>
