@@ -42,3 +42,51 @@ body {
 .animate-run {
   animation: runBounce 0.6s ease-in-out infinite;
 }
+
+/* ===== Strong Moving Bottom Border ===== */
+@keyframes moveBottom {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* ===== Strong Moving Left Border ===== */
+@keyframes moveLeft {
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 200%;
+  }
+}
+
+.animated-bottom-border {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #9147ff,
+    #c084fc,
+    #9147ff,
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: moveBottom 1.5s linear infinite;
+  box-shadow: 0 0 12px #9147ff;
+}
+
+.animated-left-border {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #9147ff,
+    #c084fc,
+    #9147ff,
+    transparent
+  );
+  background-size: 100% 200%;
+  animation: moveLeft 1.5s linear infinite;
+  box-shadow: 0 0 12px #9147ff;
+}
