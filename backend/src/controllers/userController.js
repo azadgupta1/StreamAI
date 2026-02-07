@@ -55,3 +55,37 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error, please try again later.' });
   }
 };
+
+export const changePassword = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { currentPassword, newPassword } = req.body;
+    const user = await prisma.user.findUnique({ where: { user_id: userId } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    if (user.password !== currentPassword) {
+      return res.status(400).json({ message: 'Current password is incorrect' });
+    }
+    await prisma.user.update({
+      where: { user_id: userId },
+      data: { password: newPassword },
+    });
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error, please try again later.' });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.userId;
+    await prisma.user.delete({ where: { user_id: userId } });
+    res.status(200).json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error, please try again later.' });
+  }
+};

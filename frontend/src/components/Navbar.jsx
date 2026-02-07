@@ -8,13 +8,16 @@ import { useAuthStore } from "../store/useAuthStore";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [profileOpen, setProfileOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { authUser, logout } = useAuthStore();
-console.log("Navbar authUser:", authUser);
+
   /* ================= CLOSE SIDEBAR ON ROUTE CHANGE ================= */
   useEffect(() => {
     setSidebarOpen(false);
+    setProfileOpen(false);
   }, [location.pathname]);
+
 
   /* ================= CLOSE SIDEBAR ON RESIZE ================= */
   useEffect(() => {
@@ -28,6 +31,20 @@ console.log("Navbar authUser:", authUser);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+  
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (!e.target.closest(".profile-menu")) {
+          setProfileOpen(false);
+        }
+      };
+
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
+    
   /* ================= LOCK BODY SCROLL ================= */
   useEffect(() => {
     if (sidebarOpen) {
@@ -54,25 +71,54 @@ console.log("Navbar authUser:", authUser);
           <NavLink to="/explore" label="Live Streams" />
           <NavLink to="/about" label="About" />
 
-          {authUser ?(
-            <div className="flex items-center gap-6 ml-4">
-              <button
-                onClick={() => navigate("/profile")}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition bg-[#9147FF] px-4 py-2 rounded-full cursor-pointer"
-              >
-                <FaUserAstronaut className="text-white size-5" />
-                Profile
-              </button>
+        {authUser ? (
+          <div className="relative profile-menu ml-4">
+            {/* Profile Icon */}
+            <button
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="w-10 h-10 rounded-full overflow-hidden border border-[#9147FF] hover:scale-105 transition"
+            >
+              <img
+                src={
+                  authUser.profile_picture
+                    ? `http://localhost:5000${authUser.profile_picture}`
+                    : "https://ui-avatars.com/api/?name=" + authUser.username
+                }
+                alt="profile"
+                className="w-full h-full object-cover"
+              />
+            </button>
 
-              <button
-                onClick={logout}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition cursor-pointer"
-              >
-                <IoMdLogOut className="text-[#9147FF] size-5" />
-                Logout
-              </button>
-            </div>
-          ) : (
+            {/* Dropdown */}
+            {profileOpen && (
+              <div className="absolute right-0 mt-3 w-52 bg-[#18181B] border border-[#26262C] rounded-lg shadow-lg overflow-hidden">
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
+                >
+                  Channel
+                </button>
+
+                <button
+                  onClick={() => navigate("/creator")}
+                  className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
+                >
+                  Creator Dashboard
+                </button>
+
+                <div className="border-t border-[#26262C]" />
+
+                <button
+                  onClick={logout}
+                  className="w-full text-left px-4 py-3 hover:bg-red-600/20 text-red-400 text-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+
             <div className="flex gap-4 ml-4">
               <Link
                 to="/login"
@@ -123,24 +169,30 @@ console.log("Navbar authUser:", authUser);
           <SidebarLink to="/about" label="About" />
 
           {authUser ? (
-            <>
+            <div className="flex flex-col gap-3">
               <button
                 onClick={() => navigate("/profile")}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition"
+                className="text-left hover:text-white"
               >
-                <FaUserAstronaut className="text-[#9147FF]" />
-                Profile
+                Channel
+              </button>
+
+              <button
+                onClick={() => navigate("/creator")}
+                className="text-left hover:text-white"
+              >
+                Creator Dashboard
               </button>
 
               <button
                 onClick={logout}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition"
+                className="text-left text-red-400 hover:text-red-300"
               >
-                <IoMdLogOut className="text-[#9147FF]" />
                 Logout
               </button>
-            </>
+            </div>
           ) : (
+
             <>
               <SidebarLink to="/login" label="Log In" />
               <SidebarLink to="/signup" label="Sign Up" />

@@ -22,7 +22,7 @@ const generateUniqueStreamKey = async () => {
 // Generate a new stream key for the user
 export const generateStreamKey = async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.userId;
     if (!userId) {
       return res.status(400).json({ error: "Invalid user ID" });
     }

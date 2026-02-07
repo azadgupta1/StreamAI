@@ -17,6 +17,8 @@ import Dashboard from "./pages/Dashboard";
 import StartStream from "./pages/StartStream";
 import ViewStream from "./pages/ViewStream";
 
+import CreatorDashboard from "./pages/CreatorDashboard";
+
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -86,6 +88,7 @@ const App = () => {
           <Route path="/player2" element={<StreamPlayer2 />} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/explore" element={<ExploreLiveStreamPage />} />
+          <Route path="/creator" element={<ProtectedRoute><CreatorDashboard /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </div>
