@@ -11,15 +11,14 @@ import ProfilePage from "./pages/ProfilePage";
 import toast from "react-hot-toast";
 import ExploreLiveStreamPage from "./pages/ExploreLiveStreamPage";
 
-import Dashboard from './pages/Dashboard';
-import StartStream from './pages/StartStream';
-import ViewStream from './pages/ViewStream';
+import Dashboard from "./pages/Dashboard";
+import StartStream from "./pages/StartStream";
+import ViewStream from "./pages/ViewStream";
 
-import SignUp from './pages/SignUp';
-import Login from './pages/Login';
-import ProtectedRoute from './components/ProtectedRoute';
-import LoggedInRoute from './components/LoggedInRoute';
-
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoggedInRoute from "./components/LoggedInRoute";
 
 const App = () => {
   const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
@@ -40,27 +39,51 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Routes>
-
           {/* <Route path="/" element = {<SignUp />} /> */}
           {/* <Route path="/login" element = {<Login />} /> */}
 
           {/* <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
-          <Route path="/view" element={<ProtectedRoute><ViewStream /></ProtectedRoute>} />
-          <Route path="/start" element={<ProtectedRoute><StartStream /></ProtectedRoute>} />
+          <Route
+            path="/view"
+            element={
+              <ProtectedRoute>
+                <ViewStream />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/start"
+            element={
+              <ProtectedRoute>
+                <StartStream />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<HomePage />} />
 
+          <Route
+            path="/register"
+            element={
+              <LoggedInRoute>
+                <RegisterPage />
+              </LoggedInRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <LoggedInRoute>
+                <LoginPage />
+              </LoggedInRoute>
+            }
+          />
 
-          <Route path="/register" element={<LoggedInRoute><RegisterPage /></LoggedInRoute>} />
-          <Route path="/login" element={<LoggedInRoute><LoginPage /></LoggedInRoute>} />
-
-          
           <Route path="/player" element={<StreamPlayer />} />
           <Route path="/player2" element={<StreamPlayer2 />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/explore" element={<ExploreLiveStreamPage />} /> 
-          
+          <Route path="/explore" element={<ExploreLiveStreamPage />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -68,4 +91,3 @@ const App = () => {
 };
 
 export default App;
-

@@ -1,2 +1,26 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: #000000;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000000;
+}
