@@ -129,7 +129,7 @@ const Explore = () => {
                 className="px-6 py-2 border-2 border-[#9147FF]
                               text-white text-sm font-semibold
                               rounded-md tracking-wide
-                              group-hover:bg-[#9147FF]
+                              group-hover:bg-[#9147FF]/50
                               transition duration-300"
               >
                 Watch Stream
