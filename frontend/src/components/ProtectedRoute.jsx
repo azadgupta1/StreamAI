@@ -1,14 +1,26 @@
-import React from 'react';
-import {Navigate} from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
+import { Loader } from "lucide-react";
 
+export default function ProtectedRoute({ children }) {
+  const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
 
-export default function ProtectedRoute({children}){
+  useEffect(() => {
+    isAuthenticate();
+  }, [isAuthenticate]);
 
-    const token = localStorage.getItem("token");
+  if (isCheckingAuth && !authUser) {
+    return (
+      <div className="bg-[#0e0e0e] flex items-center justify-center h-screen">
+        <Loader className="size-10 animate-spin" />
+      </div>
+    );
+  }
 
-    if(!token){
-        return <Navigate to="/login" replace />;
-    }
+  if (!authUser) {
+    return <Navigate to="/login" replace />;
+  }
 
-    return children;
+  return children;
 }

@@ -31,7 +31,7 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: JSON.parse(user) });
     } catch (err) {
       toast.dismiss();
-      toast.success("Sign-up/Sign-in to access StreamAI", {
+      toast.error("Sign-up/Sign-in to access StreamAI", {
         id: "Unauthenticated user",
       });
       set({ authUser: null });

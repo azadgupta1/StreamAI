@@ -11,16 +11,15 @@ createRoot(document.getElementById("root")).render(
       toastOptions={{
         duration: 4000,
         style: {
-          background: "#1f2937",
+          background: "#000",
           color: "#fff",
-          fontWeight: "bold",
-          border: "1px solid #ef4444",
-          borderRadius: "12px",
+          border: "1px solid #0e0e0e",
+          borderRadius: "25px",
           padding: "10px",
         },
         success: {
           style: {
-            background: "#10b981",
+            background: "#9147ff",
             color: "#fff",
           },
         },
@@ -32,5 +31,5 @@ createRoot(document.getElementById("root")).render(
         },
       }}
     />
-  </StrictMode>
+  </StrictMode>,
 );
