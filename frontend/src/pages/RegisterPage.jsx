@@ -67,9 +67,9 @@ const RegisterPage = () => {
             <div className="flex flex-col items-center gap-2 group">
               <div className="relative size-12 rounded-xl flex items-center justify-center transition-colors">
                 <div className="text-3xl z-40 font-bold">
-                  Stream<span className="text-red-500">AI</span>
+                  Stream<span className="text-[#9147FF]">AI</span>
                 </div>
-                <div className="absolute size-2 bg-red-600 animate-pulse rounded-full top-3 -right-14"></div>
+                <div className="absolute size-2 bg-[#9147ff] animate-pulse rounded-full top-3 -right-14"></div>
               </div>
               <h1 className="text-2xl font-bold mt-2">Create Account</h1>
             </div>
@@ -149,7 +149,7 @@ const RegisterPage = () => {
 
             <button
               type="submit"
-              className="btn bg-red-500 w-full"
+              className="btn bg-[#9147ff] w-full"
               disabled={isRegistering}
             >
               {isRegistering ? (
@@ -166,7 +166,7 @@ const RegisterPage = () => {
           <div className="text-center">
             <p className="text-base-content/60">
               Already have an account?{" "}
-              <Link to="/login" className="link text-red-600">
+              <Link to="/login" className="link text-[#9147ff]">
                 Login in
               </Link>
             </p>
