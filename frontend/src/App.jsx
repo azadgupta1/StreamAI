@@ -25,19 +25,26 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoggedInRoute from "./components/LoggedInRoute";
 
 const App = () => {
-  const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
+  // const { authUser, isAuthenticate, isCheckingAuth } = useAuthStore();
+
+  // useEffect(() => {
+  //   isAuthenticate();
+  // }, [isAuthenticate]);
+
+  // if (isCheckingAuth && !authUser) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Loader className="size-10 animate-spin" />
+  //     </div>
+  //   );
+  // }
 
   useEffect(() => {
-    isAuthenticate();
-  }, [isAuthenticate]);
-
-  if (isCheckingAuth && !authUser) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
+    if (!localStorage.getItem("hasVisited")) {
+      toast.success("Curating something just for you…");
+      localStorage.setItem("hasVisited", true);
+    }
+  });
 
   return (
     <div>
@@ -86,9 +93,23 @@ const App = () => {
 
           <Route path="/player" element={<StreamPlayer />} />
           <Route path="/player2" element={<StreamPlayer2 />} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/explore" element={<ExploreLiveStreamPage />} />
-          <Route path="/creator" element={<ProtectedRoute><CreatorDashboard /></ProtectedRoute>} />
+          <Route
+            path="/creator"
+            element={
+              <ProtectedRoute>
+                <CreatorDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
