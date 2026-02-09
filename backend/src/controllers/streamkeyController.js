@@ -80,7 +80,7 @@ export const getStreamKey = async (req, res) => {
 // Regenerate the stream key for the user
 export const regenerateStreamKey = async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.userId;
 
     if (!userId) {
       return res.status(400).json({ error: "Invalid user ID" });

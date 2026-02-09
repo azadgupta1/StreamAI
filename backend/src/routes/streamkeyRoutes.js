@@ -10,7 +10,7 @@ import {authenticate} from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 // Generate a new stream key for the user
-router.post("/generate", authenticate, generateStreamKey);
+router.get("/generate", authenticate, generateStreamKey);
 
 // Get the current stream key for the user
 router.get("/", authenticate, getStreamKey);

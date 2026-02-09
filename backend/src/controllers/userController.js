@@ -1,4 +1,5 @@
 import prisma from "../config/prismaClient.js";
+import bcrypt from "bcrypt";
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -65,12 +66,17 @@ export const changePassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    if (user.password !== currentPassword) {
+    
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isPasswordValid) {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
     await prisma.user.update({
       where: { user_id: userId },
-      data: { password: newPassword },
+      data: { password: hashedNewPassword },
     });
     res.status(200).json({ message: 'Password updated successfully' });
   } catch (error) {
