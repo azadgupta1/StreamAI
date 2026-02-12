@@ -96,7 +96,7 @@ const StreamPlayer = () => {
         </div>
         {/* <SideRecommendations /> */}
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

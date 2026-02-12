@@ -16,23 +16,32 @@ model User {
   profile_picture String?
   bio            String?
   role           String          @default("viewer")
+
+  is_blocked     Boolean         @default(false)
+  warning_count  Int             @default(0)
+  timeout_until  DateTime?
+
   created_at     DateTime        @default(now())
   updated_at     DateTime        @updatedAt
-  streams        Stream[]        
+
+  streams        Stream[]
   followers      Follower[]      @relation("FollowedBy")
   following      Follower[]      @relation("Follows")
   subscriptions  Subscription[]  @relation("UserSubscriptions")
   streamers      Subscription[]  @relation("StreamerSubscriptions")
-  stream_keys    StreamKey[]     
-  likes          Like[]          
-  chats          Chat[]          
+  stream_keys    StreamKey[]
+  likes          Like[]
+  chats          Chat[]
+
+  moderation_logs ModerationLog[]  
 }
+
 
 model Stream {
   stream_id       String        @id @default(cuid())
   title           String
   description     String?
-  category_id     String        // Use String to ensure consistency
+  category_id     String
   streamer_id     String
   is_live         Boolean       @default(false)
   viewer_count    Int           @default(0)
@@ -40,12 +49,14 @@ model Stream {
   started_at      DateTime?
   ended_at        DateTime?
 
-  // Relations
   category        Category      @relation(fields: [category_id], references: [category_id])
   streamer        User          @relation(fields: [streamer_id], references: [user_id])
-  likes           Like[]        
-  chats           Chat[]        
+  likes           Like[]
+  chats           Chat[]
+
+  moderation_logs ModerationLog[]   
 }
+
 
 model Category {
   category_id     String        @id @default(cuid()) // Use String for consistency
@@ -94,12 +105,13 @@ model Chat {
   chat_id         String        @id @default(cuid())
   stream_id       String
   user_id         String
-  username        String
   message         String
   sent_at         DateTime      @default(now())
 
   stream          Stream        @relation(fields: [stream_id], references: [stream_id])
   user            User          @relation(fields: [user_id], references: [user_id])
+
+  @@index([stream_id, sent_at])
 }
 
 
@@ -111,12 +123,16 @@ model StreamKey {
   streamer   User     @relation(fields: [streamer_id], references: [user_id])
 }
 
+model ModerationLog {
+  log_id      String   @id @default(cuid())
+  user_id     String
+  stream_id   String
+  reason      String
+  created_at  DateTime @default(now())
 
-
-
-
-
-
+  user        User     @relation(fields: [user_id], references: [user_id])
+  stream      Stream   @relation(fields: [stream_id], references: [stream_id])
+}
 
 
 
