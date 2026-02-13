@@ -48,17 +48,17 @@ const App = () => {
           <Route
             path="/register"
             element={
-              <LoggedInRoute>
+              <ProtectedRoute>
                 <RegisterPage />
-              </LoggedInRoute>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/login"
             element={
-              <LoggedInRoute>
+              <ProtectedRoute>
                 <LoginPage />
-              </LoggedInRoute>
+              </ProtectedRoute>
             }
           />
 
@@ -72,14 +72,15 @@ const App = () => {
             }
           />
           <Route path="/explore" element={<ExploreLiveStreamPage />} />
-          <Route
+          {/* <Route
             path="/creator"
             element={
               <ProtectedRoute>
                 <CreatorDashboard />
               </ProtectedRoute>
             }
-          />
+          /> */}
+          <Route path="/dashboard" element={<CreatorDashboard />} />
         </Routes>
       </BrowserRouter>
     </div>

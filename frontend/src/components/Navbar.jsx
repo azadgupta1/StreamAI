@@ -18,15 +18,11 @@
 //     isAuthenticate();
 //   }, [isAuthenticate]);
 
-
-
-
 //   /* ================= CLOSE SIDEBAR ON ROUTE CHANGE ================= */
 //   useEffect(() => {
 //     setSidebarOpen(false);
 //     setProfileOpen(false);
 //   }, [location.pathname]);
-
 
 //   /* ================= CLOSE SIDEBAR ON RESIZE ================= */
 //   useEffect(() => {
@@ -40,8 +36,6 @@
 //     return () => window.removeEventListener("resize", handleResize);
 //   }, []);
 
-
-  
 //     useEffect(() => {
 //       const handleClickOutside = (e) => {
 //         if (!e.target.closest(".profile-menu")) {
@@ -53,7 +47,6 @@
 //       return () => document.removeEventListener("click", handleClickOutside);
 //     }, []);
 
-    
 //   /* ================= LOCK BODY SCROLL ================= */
 //   useEffect(() => {
 //     if (sidebarOpen) {
@@ -86,8 +79,6 @@
 //             className="h:8 md:h-10 w-auto"
 //           />
 //         </Link>
-
-
 
 //         {/* Desktop Menu */}
 //         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -248,15 +239,6 @@
 
 // export default Navbar;
 
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiMenu, FiX, FiSearch } from "react-icons/fi";
@@ -313,7 +295,6 @@ const Navbar = () => {
     <>
       {/* ================= NAVBAR ================= */}
       <nav className="w-full h-14 py-1.5 bg-[#0E0E10] border-b border-[#26262C] flex items-center justify-between px-4 sticky top-0 z-50">
-
         {/* ================= LEFT ================= */}
         <div className="flex items-center gap-6">
           <Link to="/">
@@ -335,7 +316,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-
         {/* ================= CENTER SEARCH ================= */}
         <div className="hidden md:flex flex-1 justify-center">
           <div className="flex w-[420px]">
@@ -350,10 +330,8 @@ const Navbar = () => {
           </div>
         </div>
 
-
         {/* ================= RIGHT ================= */}
         <div className="flex items-center gap-6">
-
           <NavLink to="/explore" label="Live Streams" />
           <NavLink to="/about" label="About" />
 
@@ -404,7 +382,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/signup"
+                to="/register"
                 className="bg-[#5af04f] hover:bg-[#4bbf43] text-black px-4 py-2 rounded-md text-sm font-semibold"
               >
                 Sign Up
@@ -421,7 +399,6 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
-
 
       {/* ================= SIDEBAR (Mobile) ================= */}
       <div
