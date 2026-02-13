@@ -90,3 +90,22 @@ body {
   animation: moveLeft 1.5s linear infinite;
   box-shadow: 0 0 12px #9147ff;
 }
+
+/* Slim scrollbar for modern browsers */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
