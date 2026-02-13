@@ -131,8 +131,8 @@ const Hero = () => {
                 className={`w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
                 ${
                   index === activeIndex
-                    ? "scale-105 border-2 border-[#5af04f] opacity-100"
-                    : "opacity-60"
+                    ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110"
+                    : "opacity-60 hover:opacity-100 hover:scale-101"
                 }`}
               >
                 <video
