@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Loader } from "lucide-react";
+import { Home, Loader } from "lucide-react";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -15,6 +15,7 @@ import CreatorDashboard from "./pages/CreatorDashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoggedInRoute from "./components/LoggedInRoute";
+import NotFoundRedirect from "./components/NotFoundRedirect";
 
 const App = () => {
   const { authUser } = useAuthStore();
@@ -57,6 +58,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<NotFoundRedirect />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -64,7 +66,6 @@ const App = () => {
 };
 
 export default App;
-
 
 // import React, { useEffect } from "react";
 // import "slick-carousel/slick/slick.css";
