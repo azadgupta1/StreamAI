@@ -21,7 +21,7 @@ const GoLivePanel = () => {
   const [username, setUsername] = useState("");
 
   const [HLS_URL, setHLS_URL] = useState("");
-  const socket = io("http://localhost:3000", {
+  const socket = io(import.meta.env.VITE_BACKEND_URL, {
     withCredentials: true,
   });
 

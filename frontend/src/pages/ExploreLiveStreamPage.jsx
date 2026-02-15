@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlayCircle } from "react-icons/fa";
 
 const ExploreLiveStreamPage = () => {
   const navigate = useNavigate();
 
-  /* ================= STREAM DATA WITH REAL IMAGES ================= */
+  /* ================= ALL 12 STREAMS ================= */
   const liveStreams = [
     {
       id: 1,
@@ -72,102 +72,353 @@ const ExploreLiveStreamPage = () => {
       avatar: "https://randomuser.me/api/portraits/men/88.jpg",
     },
     {
-      id: 1,
-      title: "Code with AI",
-      streamer: "CodeDev",
-      viewers: "2.3K viewers",
+      id: 9,
+      title: "Coding Marathon",
+      streamer: "DevPro",
+      viewers: "1.8K viewers",
       video: "/preview/1.webm",
-      avatar: "https://randomuser.me/api/portraits/men/11.jpg",
+      avatar: "https://randomuser.me/api/portraits/men/12.jpg",
     },
     {
-      id: 2,
-      title: "AI Fitness Trainer",
-      streamer: "FitBot",
-      viewers: "1.1K viewers",
+      id: 10,
+      title: "Yoga Live",
+      streamer: "ZenFit",
+      viewers: "950 viewers",
       video: "/preview/2.webm",
-      avatar: "https://randomuser.me/api/portraits/women/22.jpg",
+      avatar: "https://randomuser.me/api/portraits/women/25.jpg",
     },
     {
-      id: 3,
-      title: "Movie Talk Live",
-      streamer: "CinemaPro",
-      viewers: "3.5K viewers",
+      id: 11,
+      title: "Football Talk",
+      streamer: "SportsFan",
+      viewers: "6.2K viewers",
       video: "/preview/3.webm",
-      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+      avatar: "https://randomuser.me/api/portraits/men/37.jpg",
     },
     {
-      id: 4,
-      title: "Gaming Legends",
-      streamer: "ProGamerX",
-      viewers: "5.7K viewers",
+      id: 12,
+      title: "Indie Game Dev",
+      streamer: "GameMaker",
+      viewers: "1.4K viewers",
       video: "/preview/4.mp4",
-      avatar: "https://randomuser.me/api/portraits/men/44.jpg",
+      avatar: "https://randomuser.me/api/portraits/men/48.jpg",
     },
   ];
 
-  return (
-    <section className="min-h-screen bg-[#0E0E10] py-6 px-4 md:px-8">
-      {/* Header */}
-      <h1 className="text-white text-2xl font-bold mb-6">Live Channels</h1>
+  /* ================= CATEGORIES ================= */
+  const sections = ["Sports", "Gaming", "GTA VI", "Technology"];
 
-      {/* ================= TWITCH STYLE GRID ================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {liveStreams.map((stream) => (
-          <div
-            key={stream.id}
-            onClick={() => navigate("/player")}
-            className="group cursor-pointer"
-          >
-            {/* ================= VIDEO ================= */}
-            <div className="relative overflow-hidden rounded-lg">
-              <video
-                src={stream.video}
-                className="w-full h-44 object-cover transition duration-300 group-hover:scale-105"
-                autoPlay
-                muted
-                loop
-              />
+  /* ================= STREAM CARD ================= */
+  const StreamCard = ({ stream }) => (
+    <div
+      onClick={() => navigate("/player")}
+      className="group cursor-pointer"
+    >
+      <div className="relative overflow-hidden rounded-lg">
+        <video
+          src={stream.video}
+          className="w-full h-40 object-cover group-hover:scale-105 transition duration-300"
+          autoPlay
+          muted
+          loop
+        />
 
-              {/* LIVE badge */}
-              <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                LIVE
-              </span>
+        <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+          LIVE
+        </span>
 
-              {/* viewers count (top-right like Twitch) */}
-              <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                {stream.viewers}
-              </span>
+        <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+          {stream.viewers}
+        </span>
 
-              {/* play hover */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-                <FaPlayCircle className="text-white text-4xl" />
-              </div>
-            </div>
-
-            {/* ================= INFO BELOW ================= */}
-            <div className="flex gap-3 mt-3">
-              <img
-                src={stream.avatar}
-                alt="avatar"
-                className="w-10 h-10 rounded-full object-cover"
-              />
-
-              <div className="flex flex-col">
-                <h3 className="text-white text-sm font-semibold line-clamp-1">
-                  {stream.title}
-                </h3>
-
-                <p className="text-gray-400 text-xs">{stream.streamer}</p>
-              </div>
-            </div>
-          </div>
-        ))}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+          <FaPlayCircle className="text-white text-4xl" />
+        </div>
       </div>
+
+      <div className="flex gap-3 mt-3">
+        <img
+          src={stream.avatar}
+          alt="avatar"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+
+        <div>
+          <h3 className="text-white text-sm font-semibold line-clamp-1">
+            {stream.title}
+          </h3>
+          <p className="text-gray-400 text-xs">{stream.streamer}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  /* ================= SECTION COMPONENT ================= */
+  const StreamSection = ({ title }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const visibleStreams = expanded
+      ? liveStreams
+      : liveStreams.slice(0, 4);
+
+    return (
+      <div className="mb-10"> {/* tighter spacing */}
+
+        {/* Title */}
+        <h2 className="text-white text-2xl font-semibold mb-4">{title}</h2>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {visibleStreams.map((stream) => (
+            <StreamCard key={`${title}-${stream.id}`} stream={stream} />
+          ))}
+        </div>
+
+        {/* Divider + Button */}
+        <div className="flex items-center gap-4 mt-5">
+          <div className="flex-1 h-px bg-zinc-800" />
+
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="
+              px-4 py-1.5
+              text-sm text-gray-400
+              rounded-md
+              hover:bg-zinc-800
+              hover:text-gray-200
+              transition
+            "
+          >
+            {expanded ? "Show Less ↑" : "Show More ↓"}
+          </button>
+
+          <div className="flex-1 h-px bg-zinc-800" />
+        </div>
+      </div>
+    );
+  };
+
+  /* ================= PAGE ================= */
+  return (
+    <section className="min-h-screen bg-black py-4 px-4 md:px-6">
+      {/* <h1 className="text-white text-2xl font-bold mb-8">Live Channels</h1> */}
+
+      {sections.map((section) => (
+        <StreamSection key={section} title={section} />
+      ))}
     </section>
   );
 };
 
 export default ExploreLiveStreamPage;
+
+
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// import { useNavigate } from "react-router-dom";
+// import { FaPlayCircle } from "react-icons/fa";
+
+// const ExploreLiveStreamPage = () => {
+//   const navigate = useNavigate();
+
+//   /* ================= STREAM DATA WITH REAL IMAGES ================= */
+//   const liveStreams = [
+//     {
+//       id: 1,
+//       title: "Code with AI",
+//       streamer: "CodeDev",
+//       viewers: "2.3K viewers",
+//       video: "/preview/1.webm",
+//       avatar: "https://randomuser.me/api/portraits/men/11.jpg",
+//     },
+//     {
+//       id: 2,
+//       title: "AI Fitness Trainer",
+//       streamer: "FitBot",
+//       viewers: "1.1K viewers",
+//       video: "/preview/2.webm",
+//       avatar: "https://randomuser.me/api/portraits/women/22.jpg",
+//     },
+//     {
+//       id: 3,
+//       title: "Movie Talk Live",
+//       streamer: "CinemaPro",
+//       viewers: "3.5K viewers",
+//       video: "/preview/3.webm",
+//       avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+//     },
+//     {
+//       id: 4,
+//       title: "Gaming Legends",
+//       streamer: "ProGamerX",
+//       viewers: "5.7K viewers",
+//       video: "/preview/4.mp4",
+//       avatar: "https://randomuser.me/api/portraits/men/44.jpg",
+//     },
+//     {
+//       id: 5,
+//       title: "Art with AI",
+//       streamer: "CreativeAI",
+//       viewers: "876 viewers",
+//       video: "/preview/5.mp4",
+//       avatar: "https://randomuser.me/api/portraits/women/55.jpg",
+//     },
+//     {
+//       id: 6,
+//       title: "Tech Reviews Live",
+//       streamer: "TechGuy",
+//       viewers: "4.2K viewers",
+//       video: "/preview/6.mp4",
+//       avatar: "https://randomuser.me/api/portraits/men/66.jpg",
+//     },
+//     {
+//       id: 7,
+//       title: "Music Jam Session",
+//       streamer: "DJStream",
+//       viewers: "2.9K viewers",
+//       video: "/preview/7.mp4",
+//       avatar: "https://randomuser.me/api/portraits/women/77.jpg",
+//     },
+//     {
+//       id: 8,
+//       title: "Travel Adventures",
+//       streamer: "NomadLife",
+//       viewers: "3.1K viewers",
+//       video: "/preview/8.mp4",
+//       avatar: "https://randomuser.me/api/portraits/men/88.jpg",
+//     },
+//     {
+//       id: 9,
+//       title: "Code with AI",
+//       streamer: "CodeDev",
+//       viewers: "2.3K viewers",
+//       video: "/preview/1.webm",
+//       avatar: "https://randomuser.me/api/portraits/men/11.jpg",
+//     },
+//     {
+//       id: 10,
+//       title: "AI Fitness Trainer",
+//       streamer: "FitBot",
+//       viewers: "1.1K viewers",
+//       video: "/preview/2.webm",
+//       avatar: "https://randomuser.me/api/portraits/women/22.jpg",
+//     },
+//     {
+//       id: 11,
+//       title: "Movie Talk Live",
+//       streamer: "CinemaPro",
+//       viewers: "3.5K viewers",
+//       video: "/preview/3.webm",
+//       avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+//     },
+//     {
+//       id: 12,
+//       title: "Gaming Legends",
+//       streamer: "ProGamerX",
+//       viewers: "5.7K viewers",
+//       video: "/preview/4.mp4",
+//       avatar: "https://randomuser.me/api/portraits/men/44.jpg",
+//     },
+//   ];
+
+//   return (
+//     <section className="min-h-screen bg-[#0E0E10] py-6 px-4 md:px-8">
+//       {/* Header */}
+//       <h1 className="text-white text-2xl font-bold mb-6">Live Channels</h1>
+
+//       {/* ================= TWITCH STYLE GRID ================= */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+//         {liveStreams.map((stream) => (
+//           <div
+//             key={stream.id}
+//             onClick={() => navigate("/player")}
+//             className="group cursor-pointer"
+//           >
+//             {/* ================= VIDEO ================= */}
+//             <div className="relative overflow-hidden rounded-lg">
+//               <video
+//                 src={stream.video}
+//                 className="w-full h-44 object-cover transition duration-300 group-hover:scale-105"
+//                 autoPlay
+//                 muted
+//                 loop
+//               />
+
+//               {/* LIVE badge */}
+//               <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+//                 LIVE
+//               </span>
+
+//               {/* viewers count (top-right like Twitch) */}
+//               <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+//                 {stream.viewers}
+//               </span>
+
+//               {/* play hover */}
+//               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+//                 <FaPlayCircle className="text-white text-4xl" />
+//               </div>
+//             </div>
+
+//             {/* ================= INFO BELOW ================= */}
+//             <div className="flex gap-3 mt-3">
+//               <img
+//                 src={stream.avatar}
+//                 alt="avatar"
+//                 className="w-10 h-10 rounded-full object-cover"
+//               />
+
+//               <div className="flex flex-col">
+//                 <h3 className="text-white text-sm font-semibold line-clamp-1">
+//                   {stream.title}
+//                 </h3>
+
+//                 <p className="text-gray-400 text-xs">{stream.streamer}</p>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default ExploreLiveStreamPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React from "react";
 // import { useNavigate } from "react-router-dom";

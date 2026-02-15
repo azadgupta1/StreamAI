@@ -1,7 +1,10 @@
 import { Server } from "socket.io";
 import prisma from "./prismaClient.js";
 import { checkPerspectiveToxicity } from "../../services/perspectiveService.js";
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 
 const messageTracker = {};
 const lastMessageTracker = {};
@@ -12,7 +15,7 @@ const MAX_MESSAGES = 5;
 const setupSocketIO = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: process.env.FRONTEND_URL,
       credentials: true,
     },
   });
