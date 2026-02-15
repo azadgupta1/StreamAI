@@ -1,16 +1,15 @@
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaFire, FaCircle } from "react-icons/fa";
 import { TbPlayerPlayFilled } from "react-icons/tb";
 import { axiosInstance } from "../lib/axios";
-
 
 const Explore = () => {
   const navigate = useNavigate();
 
   const [streams, setStreams] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchStreams = async () => {
       try {
         const res = await axiosInstance.get("streams");
@@ -100,103 +99,109 @@ const Explore = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
         {streams.length === 0 ? (
-          <p className="text-white col-span-full text-center">No live streams available.</p>
+          <p className="text-white col-span-full text-center">
+            No live streams available.
+          </p>
         ) : (
-          streams.filter(s => s.isLive).map((stream) => (
-            <div
-              key={stream.id}
-              onClick={() => navigate(`/player/${stream.id}`)}
-              className="relative group bg-[#18181B] rounded-xl overflow-hidden cursor-pointer"
-            style={{ perspective: "1000px" }}
-          >
-            {/* 3D Wrapper */}
-            <div
-              className="relative transition-all duration-500"
-              style={{
-                transformStyle: "preserve-3d",
-              }}
-            >
-              {/* VIDEO */}
-                <img
-                  src={stream.thumbnail}
-                  alt={stream.title.length > 20 ? stream.title.slice(0, 17) + "..." : stream.title}
-                  className="w-full h-full md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  
-                />
-
-              {/* Strong 3D Effect */}
+          streams
+            .filter((s) => s.isLive)
+            .map((stream) => (
               <div
-                className="absolute inset-0 transition-all duration-500 pointer-events-none
+                key={stream.id}
+                onClick={() => navigate(`/player/${stream.id}`)}
+                className="relative group bg-[#18181B] rounded-xl overflow-hidden cursor-pointer"
+                style={{ perspective: "1000px" }}
+              >
+                {/* 3D Wrapper */}
+                <div
+                  className="relative transition-all duration-500"
+                  style={{
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  {/* VIDEO */}
+                  <img
+                    src={stream.thumbnail}
+                    alt={
+                      stream.title.length > 20
+                        ? stream.title.slice(0, 17) + "..."
+                        : stream.title
+                    }
+                    className="w-full h-full md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Strong 3D Effect */}
+                  <div
+                    className="absolute inset-0 transition-all duration-500 pointer-events-none
                            group-hover:translate-x-2
                            group-hover:-translate-y-2
                            group-hover:rotateY-6
                            group-hover:rotateX-3"
-              />
-            </div>
+                  />
+                </div>
 
-            {/* MOVING GLOW BORDER */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
-              {/* Bottom Border */}
-              <span className="absolute bottom-0 left-0 w-full h-[4px] animated-bottom-border" />
+                {/* MOVING GLOW BORDER */}
+                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
+                  {/* Bottom Border */}
+                  <span className="absolute bottom-0 left-0 w-full h-[4px] animated-bottom-border" />
 
-              {/* Left Border */}
-              <span className="absolute bottom-0 left-0 w-[4px] h-full animated-left-border" />
-            </div>
+                  {/* Left Border */}
+                  <span className="absolute bottom-0 left-0 w-[4px] h-full animated-left-border" />
+                </div>
 
-            {/* LIVE Badge */}
-            <div
-              className="absolute top-3 left-3 flex items-center gap-2
+                {/* LIVE Badge */}
+                <div
+                  className="absolute top-3 left-3 flex items-center gap-2
                             bg-red-600 px-3 py-1 rounded-md text-xs font-semibold z-10"
-            >
-              <FaCircle className="text-white text-[8px] animate-pulse" />
-              LIVE
-            </div>
-            <div className="absolute top-4 right-4 text-white">
-              <p className="text-sm text-white">
-                {stream.viewers} viewers
-                </p>
-            </div>
+                >
+                  <FaCircle className="text-white text-[8px] animate-pulse" />
+                  LIVE
+                </div>
+                <div className="absolute top-4 right-4 text-white">
+                  <p className="text-sm text-white">{stream.viewers} viewers</p>
+                </div>
 
-            {/* Hover Overlay (LESS BLUR) */}
-            <div
-              className="absolute inset-0 flex items-center justify-center
+                {/* Hover Overlay (LESS BLUR) */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center
                             opacity-0 group-hover:opacity-100
                             transition-all duration-500
                             bg-black/30"
-            >
-              <div
-                className="px-6 py-2 border-2 border-[#9147FF]
+                >
+                  <div
+                    className="px-6 py-2 border-2 border-[#9147FF]
                               text-white text-sm font-semibold
                               rounded-md tracking-wide
                               group-hover:bg-[#9147FF]/50
                               transition duration-300"
-              >
-                Watch Stream
-              </div>
-            </div>
+                  >
+                    Watch Stream
+                  </div>
+                </div>
 
-            {/* Bottom Info */}
-            <div className="absolute bottom-0 left-0 flex w-full items-center gap-4 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
-              <img
-                src={stream.avatar}
-                alt="avatar"
-                className="w-10 h-10 rounded-full border-2 border-[#9147FF]"
-              />
-              <div>
-              <h3 className="text-white text-base font-semibold mb-1">
-                {stream.title.length > 20 ? stream.title.slice(0, 17) + "..." : stream.title}
-              </h3>
+                {/* Bottom Info */}
+                <div className="absolute bottom-0 left-0 flex w-full items-center gap-4 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
+                  <img
+                    src={stream.avatar}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full border-2 border-[#9147FF]"
+                  />
+                  <div>
+                    <h3 className="text-white text-base font-semibold mb-1">
+                      {stream.title.length > 20
+                        ? stream.title.slice(0, 17) + "..."
+                        : stream.title}
+                    </h3>
 
-              <h3 className="text-white text-sm font-light">
-                {stream.streamer}
-              </h3>
+                    <h3 className="text-white text-sm font-light">
+                      {stream.streamer}
+                    </h3>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )))}
-      
+            ))
+        )}
       </div>
-
     </section>
   );
 };

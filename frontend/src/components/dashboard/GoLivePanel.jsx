@@ -47,7 +47,7 @@ const GoLivePanel = () => {
           setDescription(stream.description || "");
           setCategory(stream.category_id);
           setIsLive(stream.is_live);
-          setHLS_URL(`http://stream.streamai.in:8080/live/${stream.streamKey}.m3u8`);
+          setHLS_URL(`${import.meta.env.VITE_STREAM_URL}/${stream.streamKey}.m3u8`);
         }
       } catch (err) {
         console.log(

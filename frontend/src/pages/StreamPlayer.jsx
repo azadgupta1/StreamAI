@@ -41,7 +41,7 @@ const StreamPlayer = () => {
         }
 
         const stream_key = stream.streamer.stream_keys[0].stream_key;
-        const url = `https://stream.streamai.in:8080/live/${stream_key}.m3u8`;
+        const url = `${import.meta.env.VITE_STREAM_URL}/${stream_key}.m3u8`;
         setHlsUrl(url);
         setStreamId(stream.stream_id);
         setStreamData(stream);
