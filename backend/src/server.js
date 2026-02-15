@@ -26,6 +26,14 @@ app.use(cors({
   origin: [process.env.FRONTEND_URL],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true,
+  allowedHeaders: [
+    "Origin",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+    "X-Request-With",
+    "Cookie",
+  ],
 }));
 
 app.use('/api/auth', authRoutes);

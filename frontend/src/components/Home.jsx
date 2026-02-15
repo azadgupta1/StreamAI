@@ -9,7 +9,7 @@ const Home = () => {
     <div className="bg-black text-white min-h-screen overflow-x-hidden">
       <Hero />
       {/* <ContinueWatching /> */}
-      {/* <Explore /> */}
+      <Explore />
       <ExploreLiveStreamPage />
       {/* <Footer /> */}
     </div>
