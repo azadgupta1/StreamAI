@@ -48,15 +48,15 @@ const App = () => {
             }
           />
           <Route path="/explore" element={<ExploreLiveStreamPage />} />
-          <Route path="/dashboard" element={<CreatorDashboard />} />
-          {/* <Route
+          {/* <Route path="/dashboard" element={<CreatorDashboard />} /> */}
+          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
                 <CreatorDashboard />
               </ProtectedRoute>
             }
-          /> */}
+          />
         </Routes>
       </BrowserRouter>
     </div>
