@@ -13,7 +13,6 @@ const Explore = () => {
     const fetchStreams = async () => {
       try {
         const res = await axiosInstance.get("streams");
-        console.log("Fetched streams:", res.data);
         const formatted = res.data.streams.map((s) => ({
           id: s.stream_id,
           title: s.title,
