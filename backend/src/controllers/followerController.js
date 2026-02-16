@@ -4,7 +4,7 @@ import prisma from '../config/prismaClient.js';
 export const followUser = async (req, res) => {
   try {
     const { followee_id } = req.body; // The user to be followed
-    const follower_id = req.user.userId;
+    const follower_id = req.userId;
 
     if (follower_id === followee_id) {
       return res.status(400).json({ message: 'You cannot follow yourself.' });
@@ -41,7 +41,7 @@ export const followUser = async (req, res) => {
 export const unfollowUser = async (req, res) => {
   try {
     const { followee_id } = req.body; // The user to unfollow
-    const follower_id = req.user.userId;
+    const follower_id = req.userId;
 
     // Check if the user is actually following
     const existingFollow = await prisma.follower.findFirst({
@@ -72,27 +72,63 @@ export const unfollowUser = async (req, res) => {
   }
 };
 
+
+export const isFollowingUser = async (req, res) => {
+  try {
+    const follower_id = req.userId;
+    const { followee_id } = req.params;
+
+    const follow = await prisma.follower.findFirst({
+      where: {
+        follower_id,
+        followee_id,
+      },
+      select: { follower_id: true },
+    });
+
+    return res.json({
+      isFollowing: !!follow,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error checking follow status." });
+  }
+};
+
+
+
 // Get followers of a user
 export const getFollowers = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.userId; 
 
     const followers = await prisma.follower.findMany({
       where: { followee_id: userId },
-      include: { follower: { select: { username: true, profile_picture: true } } },
+      select: {
+        follower_id: true,
+        followed_at: true, 
+        follower: {
+          select: {
+            username: true,
+            profile_picture: true,
+          },
+        },
+      },
+      orderBy: { followed_at: "desc" }, // newest first (optional)
     });
 
     return res.status(200).json(followers);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching followers.' });
+    res.status(500).json({ error: "Error fetching followers." });
   }
 };
+
 
 // Get following users of a user
 export const getFollowing = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.userId;
 
     const following = await prisma.follower.findMany({
       where: { follower_id: userId },

@@ -11,20 +11,27 @@ import {
   FaEllipsisH,
   FaInstagram,
   FaDiscord,
-  FaCheckCircle
+  FaCheckCircle,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
   const [streamer, setStreamer] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
   /* ================= FETCH ================= */
   useEffect(() => {
     const fetchStreamer = async () => {
       try {
         const { data } = await axiosInstance.get(`users/${streamerId}`);
         setStreamer(data);
+
+        // 🔥 Check follow status
+        const followRes = await axiosInstance.get(
+          `/followers/is-following/${streamerId}`,
+        );
+        setIsFollowing(followRes.data.isFollowing);
       } finally {
         setLoading(false);
       }
@@ -32,6 +39,45 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
 
     fetchStreamer();
   }, [streamerId]);
+
+  const handleFollowToggle = async () => {
+    if (followLoading) return;
+
+    try {
+      setFollowLoading(true);
+
+      if (isFollowing) {
+        // UNFOLLOW
+        await axiosInstance.delete("/followers", {
+          data: { followee_id: streamerId }, // 👈 body required
+        });
+
+        setIsFollowing(false);
+        setStreamer((prev) => ({
+          ...prev,
+          subscribers: prev.subscribers - 1,
+        }));
+      } else {
+        // FOLLOW
+        await axiosInstance.post("/followers", {
+          followee_id: streamerId, // 👈 body required
+        });
+
+        setIsFollowing(true);
+        setStreamer((prev) => ({
+          ...prev,
+          subscribers: prev.subscribers + 1,
+        }));
+      }
+    } catch (error) {
+      console.error(
+        "Follow error:",
+        error?.response?.data?.message || error.message,
+      );
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   /* ================= HELPERS ================= */
   const formatNumber = (num = 0) => {
@@ -61,10 +107,8 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
       {/* ===================================================== */}
 
       <div className="space-y-4">
-
         {/* ===== Row 1 : Avatar + Username + Buttons ===== */}
         <div className="flex flex-wrap items-center justify-between gap-4">
-
           {/* Left */}
           <div className="flex items-center gap-4 min-w-[250px]">
             <div className="relative">
@@ -88,10 +132,16 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
           <div className="flex flex-wrap items-center gap-3">
             <motion.button
               whileHover={{ scale: 1.05 }}
-              className="bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded-lg flex items-center gap-2"
+              onClick={handleFollowToggle}
+              disabled={followLoading}
+              className={`px-4 py-2 rounded-lg flex items-center gap-2 transition ${isFollowing ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"}`}
             >
               <FaUserPlus />
-              Follow
+              {followLoading
+                ? "Please wait..."
+                : isFollowing
+                  ? "Following"
+                  : "Follow"}
             </motion.button>
 
             <motion.button
@@ -113,7 +163,6 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
 
         {/* ===== Row 2 : Description + Viewers/Actions ===== */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-
           {/* Description grows */}
           <p className="text-white text-lg flex-1 min-w-[250px]">
             {streamer.streams?.[0]?.description || "No description provided"}
@@ -121,7 +170,6 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
 
           {/* Right side */}
           <div className="flex items-center gap-4 shrink-0">
-
             {isLive && (
               <div className="flex items-center gap-2 text-pink-500 font-semibold">
                 <FaEye />
@@ -157,7 +205,6 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
       {/* ===================================================== */}
 
       <div className="mt-6 bg-neutral-900 border border-neutral-800 rounded-xl p-5">
-
         {/* Header */}
         <div className="flex items-center gap-3">
           <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -172,15 +219,12 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
 
         {/* Socials */}
         <div className="mt-4 space-y-3 text-sm text-neutral-300">
-
           <div className="flex items-center gap-3 hover:text-white">
-            <FaInstagram className="text-pink-500" />
-            @{streamer.username}_
+            <FaInstagram className="text-pink-500" />@{streamer.username}_
           </div>
 
           <div className="flex items-center gap-3 hover:text-white">
-            <FaXTwitter />
-            @{streamer.username}_
+            <FaXTwitter />@{streamer.username}_
           </div>
 
           <div className="flex items-center gap-3 hover:text-white">
@@ -195,31 +239,15 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
           Business: {streamer.username}@gmail.com
         </div>
       </div>
-      
+
       <div className="space-y-10 mt-20">
         <DonatePanel />
       </div>
-      
     </motion.div>
   );
 };
 
 export default StreamStatsWithSubscribe;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import { axiosInstance } from "../../lib/axios";
@@ -236,9 +264,6 @@ export default StreamStatsWithSubscribe;
 //   FaShareAlt,
 //   FaEllipsisH
 // } from "react-icons/fa";
-
-
-
 
 // const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
 //   const [streamer, setStreamer] = useState(null);
@@ -331,7 +356,6 @@ export default StreamStatsWithSubscribe;
 //     </div>
 //   </div>
 
-
 //   {/* ================= ROW 2 ================= */}
 //   <div className="flex items-center justify-between gap-4">
 
@@ -362,7 +386,6 @@ export default StreamStatsWithSubscribe;
 //     </div>
 //   </div>
 
-
 //   {/* ================= ROW 3 (TAGS) ================= */}
 //   <div className="flex flex-wrap gap-2">
 //     {["Gaming", "AI", "Coding", "Live", "Chill", "Tech", "Fun"]
@@ -378,13 +401,6 @@ export default StreamStatsWithSubscribe;
 //   </div>
 
 // </div>
-
-
-
-
-
-
-
 
 //       {/* ===== ABOUT CARD (Twitch Style) ===== */}
 //       <div className="mt-6">
@@ -434,24 +450,11 @@ export default StreamStatsWithSubscribe;
 //         </div>
 //       </div>
 
-
-
 //     </motion.div>
 //   );
 // };
 
 // export default StreamStatsWithSubscribe;
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import { FaEye, FaThumbsUp, FaComment, FaUserPlus } from "react-icons/fa";
@@ -465,25 +468,10 @@ export default StreamStatsWithSubscribe;
 //       <p>Streamer ID: {streamerId}</p> {/* You can use it here */}
 //     </div>
 //   );
-  
+
 // };
 
 // export default StreamStatsWithSubscribe;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // return (
 //     <div className="w-full mt-4 bg-[#0f0f0f] border border-gray-800 rounded-xl p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">

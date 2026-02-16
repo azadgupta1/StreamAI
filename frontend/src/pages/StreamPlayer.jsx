@@ -182,9 +182,10 @@ return (
         <div className="w-full lg:w-[70%] h-full overflow-y-auto">
           <VideoSection
             videoRef={videoRef}
-            stream={streamData}
+            streamerName={streamData?.streamer?.username}
             viewerCount={viewerCount}
             streamerId={streamerId}
+            hlsUrl={hlsUrl}
           />
         </div>
 

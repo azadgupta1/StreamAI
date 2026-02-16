@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import Hls from "hls.js";
 import { axiosInstance } from "../../lib/axios";
 import { io } from "socket.io-client";

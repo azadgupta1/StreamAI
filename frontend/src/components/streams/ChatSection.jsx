@@ -123,12 +123,7 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount }
       <div className="flex-1 flex flex-col overflow-hidden">
         {activeTab === "Comments" && (
           <div className="flex flex-col h-full">
-            {/* Viewer Count */}
-            <div className="px-4 py-2 text-sm text-gray-400 border-b border-gray-800 bg-[#141414]">
-              👀{" "}
-              <span className="text-green-400 font-medium">{viewerCount}</span>{" "}
-              watching
-            </div>
+
 
             {/* Messages */}
             <div

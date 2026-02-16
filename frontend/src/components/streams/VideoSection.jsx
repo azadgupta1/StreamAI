@@ -23,27 +23,38 @@
 
 // export default VideoSection;
 
-
-
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaBroadcastTower } from "react-icons/fa";
 import StreamStats from "./StreamStats";
 import DonatePanel from "./DonatePanel";
 
-const VideoSection = ({ videoRef, viewerCount, streamerId }) => {
+const VideoSection = ({ videoRef, viewerCount, streamerId, streamerName, hlsUrl }) => {
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     const checkStream = () => {
-      if (!videoRef?.current?.srcObject) {
+      if (!videoRef?.current?.src) {
         setIsOffline(true);
       } else {
         setIsOffline(false);
       }
     };
 
+    const checkStatus = async () => {
+      try {
+        const res = await fetch(hlsUrl || "", {
+          method: "HEAD", // Only get headers (no body)
+        });
+        if (res.status === 404) {
+          setIsOffline(true);
+        }
+      } catch (err) {
+        console.error("Request failed:", err.message);
+      }
+    };
     checkStream();
+    checkStatus();
 
     const interval = setInterval(checkStream, 2000);
     return () => clearInterval(interval);
@@ -51,10 +62,8 @@ const VideoSection = ({ videoRef, viewerCount, streamerId }) => {
 
   return (
     <div className="min-h-screen flex-1 flex flex-col items-center w-full bg-gray-900">
-
       {/* ================= VIDEO AREA ================= */}
       <div className="w-full relative border-b border-gray-700">
-
         {!isOffline ? (
           <video
             ref={videoRef}
@@ -74,25 +83,19 @@ const VideoSection = ({ videoRef, viewerCount, streamerId }) => {
             <FaBroadcastTower size={60} className="mb-4 opacity-70" />
 
             <h2 className="text-2xl font-semibold">
-              {streamerId} is Offline
+              {streamerName} is Offline
             </h2>
 
-            <p className="text-gray-400 mt-2">
-              Stream will start soon 
-            </p>
+            <p className="text-gray-400 mt-2">Stream will start soon</p>
           </motion.div>
         )}
       </div>
 
       {/* Show stats only when online */}
 
-        <StreamStats
-          viewerCount={viewerCount}
-          streamerId={streamerId}
-        />
+      <StreamStats viewerCount={viewerCount} streamerId={streamerId} />
     </div>
   );
 };
 
 export default VideoSection;
-

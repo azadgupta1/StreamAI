@@ -25,7 +25,8 @@ const Navbar = ({
   /* ================= AUTH CHECK ================= */
   useEffect(() => {
     isAuthenticate();
-  }, [isAuthenticate]);
+  }, []);
+  console.log("Auth User in Navbar: ", authUser);
 
   /* ================= CLOSE MENUS ON ROUTE CHANGE ================= */
   useEffect(() => {
@@ -137,7 +138,7 @@ const Navbar = ({
                   </button>
 
                   <button
-                    onClick={() => navigate("/creator")}
+                    onClick={() => navigate("/dashboard")}
                     className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
                   >
                     Creator Dashboard
@@ -213,7 +214,7 @@ const Navbar = ({
           {authUser ? (
             <>
               <button onClick={() => navigate("/profile")}>Channel</button>
-              <button onClick={() => navigate("/creator")}>
+              <button onClick={() => navigate("/dashboard")}>
                 Creator Dashboard
               </button>
               <button onClick={logout} className="text-red-400">
@@ -409,7 +410,7 @@ export default Navbar;
 //                   </button>
 
 //                   <button
-//                     onClick={() => navigate("/creator")}
+//                     onClick={() => navigate("/dashboard")}
 //                     className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
 //                   >
 //                     Creator Dashboard
@@ -476,7 +477,7 @@ export default Navbar;
 //           {authUser ? (
 //             <>
 //               <button onClick={() => navigate("/profile")}>Channel</button>
-//               <button onClick={() => navigate("/creator")}>
+//               <button onClick={() => navigate("/dashboard")}>
 //                 Creator Dashboard
 //               </button>
 //               <button onClick={logout} className="text-red-400">
@@ -639,7 +640,7 @@ export default Navbar;
 //                   </button>
 
 //                   <button
-//                     onClick={() => navigate("/creator")}
+//                     onClick={() => navigate("/dashboard")}
 //                     className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
 //                   >
 //                     Creator Dashboard
@@ -706,7 +707,7 @@ export default Navbar;
 //           {authUser && (
 //             <>
 //               <button onClick={() => navigate("/profile")}>Channel</button>
-//               <button onClick={() => navigate("/creator")}>
+//               <button onClick={() => navigate("/dashboard")}>
 //                 Creator Dashboard
 //               </button>
 //               <button onClick={logout} className="text-red-400">
@@ -851,7 +852,7 @@ export default Navbar;
 //                 </button>
 
 //                 <button
-//                   onClick={() => navigate("/creator")}
+//                   onClick={() => navigate("/dashboard")}
 //                   className="w-full text-left px-4 py-3 hover:bg-[#26262C] text-sm"
 //                 >
 //                   Creator Dashboard
@@ -929,7 +930,7 @@ export default Navbar;
 //               </button>
 
 //               <button
-//                 onClick={() => navigate("/creator")}
+//                 onClick={() => navigate("/dashboard")}
 //                 className="text-left hover:text-white"
 //               >
 //                 Creator Dashboard

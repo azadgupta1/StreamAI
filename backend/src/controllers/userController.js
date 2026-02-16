@@ -39,6 +39,7 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+
 export const getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -47,6 +48,7 @@ export const getUserById = async (req, res) => {
       where: { user_id: userId },
       include: {
         streams: {
+          where: { is_live: true },   // ✅ Only fetch live streams
           select: {
             stream_id: true,
             title: true,
@@ -72,7 +74,8 @@ export const getUserById = async (req, res) => {
     const safeUser = {
       user_id: user.user_id,
       username: user.username,
-      profile_picture: user.profile_picture || 
+      profile_picture:
+        user.profile_picture ||
         `https://ui-avatars.com/api/?name=${user.username}&background=random`,
       bio: user.bio || "",
       role: user.role,
@@ -81,13 +84,15 @@ export const getUserById = async (req, res) => {
       timeout_until: user.timeout_until || null,
       created_at: user.created_at,
       updated_at: user.updated_at,
-      
+
       subscribers: user.followers.length,
       following_count: user.following.length,
       subscriptions_count: user.subscriptions.length,
-      totalStreams: user.streams.length,
+
+      totalStreams: user.streams.length,   // now only live streams count
       totalViews: user.streams.reduce((sum, s) => sum + s.viewer_count, 0),
-      streams: user.streams, // full stream info for public viewing
+
+      streams: user.streams, // only live streams returned
     };
 
     res.status(200).json(safeUser);
@@ -96,6 +101,7 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ message: 'Server error, please try again later.' });
   }
 };
+
 
 
 
