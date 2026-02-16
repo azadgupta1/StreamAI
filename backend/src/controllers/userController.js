@@ -27,7 +27,7 @@ export const getUserProfile = async (req, res) => {
       username: user.username,
       email: user.email,
       profilePic: user.profile_picture || "https://ui-avatars.com/api/?name=" + user.username + "&background=random",
-
+      bio: user.bio || "",
       subscribers: user.followers.length,
       totalViews: user.streams.reduce((sum, stream) => sum + stream.viewer_count, 0),
       totalStreams: user.streams.length

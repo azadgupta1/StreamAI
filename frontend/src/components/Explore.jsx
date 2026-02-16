@@ -13,7 +13,7 @@ const Explore = () => {
     const fetchStreams = async () => {
       try {
         const res = await axiosInstance.get("streams");
-
+        console.log("Fetched streams:", res.data);
         const formatted = res.data.streams.map((s) => ({
           id: s.stream_id,
           title: s.title,
@@ -21,7 +21,7 @@ const Explore = () => {
             s.thumbnail_url ||
             `https://picsum.photos/seed/${s.streamer?.username}/1280/720`, // fallback
           avatar:
-            s.streamer?.avatar_url ||
+            s.streamer?.profile_picture ||
             `https://api.dicebear.com/7.x/initials/svg?seed=${s.streamer?.username}`,
           streamer: s.streamer?.username || "Unknown",
           category: s.category?.name || "Streaming",

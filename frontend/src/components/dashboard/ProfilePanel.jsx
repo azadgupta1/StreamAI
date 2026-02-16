@@ -1,5 +1,5 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { axiosInstance } from "../../lib/axios";
 
 const ProfilePanel = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +8,28 @@ const ProfilePanel = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  /* ================= LOAD PROFILE ================= */
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axiosInstance.get("/users/profile", {});
+        console.log("User profile data:", res.data);
+        setUsername(res.data.username);
+        setBio(res.data.bio);
+        setEmail(res.data.email);
+        if (res.data.profilePic) {
+          setPreview(res.data.profilePic);
+        }
+      } catch (err) {
+        console.error("Failed to load user", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   /* ================= IMAGE PREVIEW ================= */
   const handleImageChange = (e) => {
@@ -28,12 +50,7 @@ const ProfilePanel = () => {
       formData.append("bio", bio);
       if (profilePic) formData.append("profile_picture", profilePic);
 
-      await axios.put("http://localhost:3000/api/users/profile", formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axiosInstance.put("/users/profile", formData);
 
       alert("Profile updated");
     } catch (err) {
@@ -50,7 +67,6 @@ const ProfilePanel = () => {
 
       {/* PROFILE CARD */}
       <div className="bg-gray-900 p-6 rounded-lg space-y-6">
-
         {/* Profile Picture */}
         <div className="flex items-center gap-6">
           <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-700">
