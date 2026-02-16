@@ -21,10 +21,10 @@ const tabs = [
   "Analysis",
 ];
 
-const ChatSection = ({ streamId, userId, username }) => {
+const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount }) => {
   const [activeTab, setActiveTab] = useState("Comments");
   const [chats, setChats] = useState([]);
-  const [viewerCount, setViewerCount] = useState(0);
+  // const [viewerCount, setViewerCount] = useState(0);
 
   const chatContainerRef = useRef(null);
 
@@ -102,7 +102,7 @@ const ChatSection = ({ streamId, userId, username }) => {
   };
 
   return (
-    <div className="flex flex-col h-[65vh] lg:h-[85vh] bg-[#0f0f0f] rounded-xl border border-gray-800 shadow-xl overflow-hidden">
+    <div className="flex flex-col h-full lg:h-full bg-[#0f0f0f] border border-gray-800 shadow-xl overflow-hidden">
       <div className="flex gap-6 px-4 pt-3 border-b border-gray-800 bg-[#141414] overflow-x-auto">
         {tabs.map((tab) => (
           <button
@@ -190,6 +190,14 @@ const ChatSection = ({ streamId, userId, username }) => {
 };
 
 export default ChatSection;
+
+
+
+
+
+
+
+
 
 // import React, { useState, useEffect, useRef, use } from "react";
 // import { io } from "socket.io-client";

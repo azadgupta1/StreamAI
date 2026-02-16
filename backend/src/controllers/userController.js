@@ -39,25 +39,66 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// export const updateUserProfile = async (req, res) => {
-//   try {
-//     const userId = req.userId;
-//     const { username, email } = req.body;
-//     const updatedUser = await prisma.user.update({
-//       where: { user_id: userId },
-//       data: { username, email },
-//     });
-//     const safeUser = {
-//       user_id: updatedUser.user_id,
-//       username: updatedUser.username,
-//       email: updatedUser.email,
-//     };
-//     res.status(200).json(safeUser);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server error, please try again later.' });
-//   }
-// };
+export const getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await prisma.user.findUnique({
+      where: { user_id: userId },
+      include: {
+        streams: {
+          select: {
+            stream_id: true,
+            title: true,
+            description: true,
+            category_id: true,
+            is_live: true,
+            viewer_count: true,
+            thumbnail: true,
+            started_at: true,
+            ended_at: true,
+          },
+        },
+        followers: true,
+        following: true,
+        subscriptions: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const safeUser = {
+      user_id: user.user_id,
+      username: user.username,
+      profile_picture: user.profile_picture || 
+        `https://ui-avatars.com/api/?name=${user.username}&background=random`,
+      bio: user.bio || "",
+      role: user.role,
+      is_blocked: user.is_blocked,
+      warning_count: user.warning_count,
+      timeout_until: user.timeout_until || null,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+      
+      subscribers: user.followers.length,
+      following_count: user.following.length,
+      subscriptions_count: user.subscriptions.length,
+      totalStreams: user.streams.length,
+      totalViews: user.streams.reduce((sum, s) => sum + s.viewer_count, 0),
+      streams: user.streams, // full stream info for public viewing
+    };
+
+    res.status(200).json(safeUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error, please try again later.' });
+  }
+};
+
+
+
 
 export const updateUserProfile = async (req, res) => {
   try {

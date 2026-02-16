@@ -90,123 +90,83 @@ const Explore = () => {
   ];
 
   return (
-    <section className="py-16 px-6 md:px-12 lg:px-20 bg-[#0E0E10]">
-      {/* Title */}
-      <h2 className="text-2xl md:text-3xl font-bold mb-10 flex items-center gap-3 text-white">
-        <TbPlayerPlayFilled className="text-[#9147FF]" />
-        Live Streams
-      </h2>
+  <section className="bg-black py-0 px-4 md:px-6">
+    {/* Title */}
+    <h2 className="text-white text-xl md:text-2xl font-semibold mt-4 mb-6 flex items-center gap-3">
+      Live channels we think you’ll like
+    </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-        {streams.length === 0 ? (
-          <p className="text-white col-span-full text-center">
-            No live streams available.
-          </p>
-        ) : (
-          streams
-            .filter((s) => s.isLive)
-            .map((stream) => (
-              <div
-                key={stream.id}
-                onClick={() => navigate(`/player/${stream.id}`)}
-                className="relative group bg-[#18181B] rounded-xl overflow-hidden cursor-pointer"
-                style={{ perspective: "1000px" }}
-              >
-                {/* 3D Wrapper */}
-                <div
-                  className="relative transition-all duration-500"
-                  style={{
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* VIDEO */}
-                  <img
-                    src={stream.thumbnail}
-                    alt={
-                      stream.title.length > 20
-                        ? stream.title.slice(0, 17) + "..."
-                        : stream.title
-                    }
-                    className="w-full h-full md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-
-                  {/* Strong 3D Effect */}
-                  <div
-                    className="absolute inset-0 transition-all duration-500 pointer-events-none
-                           group-hover:translate-x-2
-                           group-hover:-translate-y-2
-                           group-hover:rotateY-6
-                           group-hover:rotateX-3"
-                  />
-                </div>
-
-                {/* MOVING GLOW BORDER */}
-                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300">
-                  {/* Bottom Border */}
-                  <span className="absolute bottom-0 left-0 w-full h-[4px] animated-bottom-border" />
-
-                  {/* Left Border */}
-                  <span className="absolute bottom-0 left-0 w-[4px] h-full animated-left-border" />
-                </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {streams.length === 0 ? (
+        <p className="text-white col-span-full text-center">
+          No live streams available.
+        </p>
+      ) : (
+        streams
+          .filter((s) => s.isLive)
+          .map((stream) => (
+            <div
+              key={stream.id}
+              onClick={() => navigate(`/player/${stream.id}`)}
+              className="group cursor-pointer"
+            >
+              {/* Thumbnail */}
+              <div className="relative overflow-hidden rounded-lg">
+                <img
+                  src={stream.thumbnail}
+                  alt={stream.title}
+                  className="w-full h-48 object-cover transition duration-300 group-hover:scale-105"
+                />
 
                 {/* LIVE Badge */}
-                <div
-                  className="absolute top-3 left-3 flex items-center gap-2
-                            bg-red-600 px-3 py-1 rounded-md text-xs font-semibold z-10"
-                >
-                  <FaCircle className="text-white text-[8px] animate-pulse" />
+                <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                   LIVE
-                </div>
-                <div className="absolute top-4 right-4 text-white">
-                  <p className="text-sm text-white">{stream.viewers} viewers</p>
-                </div>
+                </span>
 
-                {/* Hover Overlay (LESS BLUR) */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center
-                            opacity-0 group-hover:opacity-100
-                            transition-all duration-500
-                            bg-black/30"
-                >
-                  <div
-                    className="px-6 py-2 border-2 border-[#9147FF]
-                              text-white text-sm font-semibold
-                              rounded-md tracking-wide
-                              group-hover:bg-[#9147FF]/50
-                              transition duration-300"
-                  >
-                    Watch Stream
-                  </div>
-                </div>
+                {/* Viewer Count */}
+                <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                  {stream.viewers} viewers
+                </span>
 
-                {/* Bottom Info */}
-                <div className="absolute bottom-0 left-0 flex w-full items-center gap-4 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
-                  <img
-                    src={stream.avatar}
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full border-2 border-[#9147FF]"
-                  />
-                  <div>
-                    <h3 className="text-white text-base font-semibold mb-1">
-                      {stream.title.length > 20
-                        ? stream.title.slice(0, 17) + "..."
-                        : stream.title}
-                    </h3>
-
-                    <h3 className="text-white text-sm font-light">
-                      {stream.streamer}
-                    </h3>
-                  </div>
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                  <TbPlayerPlayFilled className="text-white text-4xl" />
                 </div>
               </div>
-            ))
-        )}
-      </div>
-    </section>
-  );
+
+              {/* Stream Info */}
+              <div className="flex gap-3 mt-3">
+                <img
+                  src={stream.avatar}
+                  alt="avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+
+                <div>
+                  <h3 className="text-white text-sm font-semibold line-clamp-1">
+                    {stream.title}
+                  </h3>
+                  <p className="text-gray-400 text-xs">
+                    {stream.streamer}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+      )}
+    </div>
+        {/* Bottom Divider */}
+    <div className="mt-12 h-px w-full bg-zinc-800" />
+
+  </section>
+);
+
 };
 
 export default Explore;
+
+
+
 
 // import React from "react";
 // import { useNavigate } from "react-router-dom";

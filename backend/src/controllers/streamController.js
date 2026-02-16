@@ -63,6 +63,8 @@ export const getStreamById = async (req, res) => {
         category: true,
         streamer: {
           select: {
+            user_id: true,
+            username: true, 
             stream_keys: {
               select: {
                 stream_key: true,   // or whatever your field name is
