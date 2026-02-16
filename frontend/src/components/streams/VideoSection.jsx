@@ -33,14 +33,6 @@ const VideoSection = ({ videoRef, viewerCount, streamerId, streamerName, hlsUrl 
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
-    const checkStream = () => {
-      if (!videoRef?.current?.src) {
-        setIsOffline(true);
-      } else {
-        setIsOffline(false);
-      }
-    };
-
     const checkStatus = async () => {
       try {
         const res = await fetch(hlsUrl || "", {
@@ -49,14 +41,16 @@ const VideoSection = ({ videoRef, viewerCount, streamerId, streamerName, hlsUrl 
         if (res.status === 404) {
           setIsOffline(true);
         }
+        else {          
+          setIsOffline(false);
+        }
       } catch (err) {
         console.error("Request failed:", err.message);
       }
     };
-    checkStream();
     checkStatus();
 
-    const interval = setInterval(checkStream, 2000);
+    const interval = setInterval(checkStatus, 2000);
     return () => clearInterval(interval);
   }, [videoRef]);
 
