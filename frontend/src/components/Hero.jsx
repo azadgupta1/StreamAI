@@ -116,7 +116,7 @@ const Hero = () => {
 
         <button
           onClick={() => navigate(`/player/${activeStream.id}`)}
-          className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition"
+          className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
         >
           Watch Now
         </button>
