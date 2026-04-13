@@ -107,9 +107,8 @@ body {
 
 .scrollbar-thin {
   scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgba(255,255,255,0.3) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
-
 
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
