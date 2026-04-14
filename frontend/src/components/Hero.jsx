@@ -132,7 +132,7 @@ const Hero = () => {
                 ${
                   index === activeIndex
                     ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110"
-                    : "opacity-60 hover:opacity-100 hover:scale-101"
+                    : "opacity-20 hover:opacity-100 hover:scale-101"
                 }`}
               >
                 <video
