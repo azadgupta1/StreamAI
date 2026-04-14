@@ -151,15 +151,15 @@ const ChatSection = ({
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.18 }}
-                    className="flex gap-1.5 text-sm leading-snug group"
+                    className="flex gap-1.5 text-md leading-snug group"
                   >
                     <span
                       style={{ color: getUserColor(c.username) }}
-                      className="font-bold shrink-0 text-xs pt-[1px] hover:underline cursor-pointer"
+                      className="font-bold shrink-0 pt-[1px] hover:underline cursor-pointer"
                     >
                       {c.username}:
                     </span>
-                    <span className="text-gray-300 text-xs break-all">
+                    <span className="text-gray-300 break-all">
                       {c.message}
                     </span>
                   </motion.div>

@@ -198,12 +198,12 @@ const TeamCard = ({ member, index }) => {
 
       <div className="p-6 flex flex-col items-center text-center flex-1">
         {/* Avatar */}
-        {/* <div
-          className={`relative w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black text-gray-950 mb-4 bg-gradient-to-br bg-amber-200 shadow-lg`}
+        <div
+          className={`relative w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black text-gray-950 mb-4 bg-gradient-to-br bg-amber-200 shadow-lg`}
         >
           {member.avatar}
           <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#5af04f] border-2 border-gray-900 animate-pulse" />
-        </div> */}
+        </div>
 
         <h3 className="text-lg font-bold text-white">{member.name}</h3>
         <p className="text-[#5af04f] text-sm font-mono font-semibold mb-3">

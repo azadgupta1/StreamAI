@@ -110,19 +110,19 @@ export const aboutData = {
     {
       id: 1,
       name: "Azad",
-      role: "Full-Stack Lead Engineer",
+      role: "Full-Stack Developer",
       avatar: "ST",
     },
     {
       id: 2,
       name: "Sarang",
-      role: "Full-Stack Lead Engineer",
+      role: "Full-Stack Developer",
       avatar: "RE",
     },
     {
       id: 3,
       name: "Om",
-      role: "Full-Stack & AI/ML Engineer",
+      role: "AI/ML Engineer",
       avatar: "AM",
     },
     {
