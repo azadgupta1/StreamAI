@@ -9,6 +9,7 @@ import likeRoutes from './routes/likesRoutes.js';
 import followerRoutes from './routes/followerRoutes.js';
 import subscriptionRoutes from './routes/subscriptionRoutes.js';
 import chatRoutes from "./routes/chatRoutes.js";
+import srsRoutes from "./routes/srsRoutes.js";
 import setupSocketIO from "./config/socket.js";
 import cors from 'cors';
 import http from 'http';
@@ -42,6 +43,7 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/followers', followerRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/srs", srsRoutes);
 
 
 app.get('/', (req, res)=>{

@@ -72,7 +72,7 @@ const VideoSection = ({ videoRef, viewerCount, streamerId, streamerName, hlsUrl 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="h-[60vh] flex flex-col items-center justify-center
-                       bg-gradient-to-br from-gray-800 to-gray-900 text-gray-300"
+                       bg-linear-to-br from-gray-800 to-gray-900 text-gray-300"
           >
             <FaBroadcastTower size={60} className="mb-4 opacity-70" />
 

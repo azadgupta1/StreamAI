@@ -197,6 +197,7 @@ return (
             username={username}
             viewerCount={viewerCount}
             setViewerCount={setViewerCount}
+            videoRef={videoRef}
           />
         </div>
 

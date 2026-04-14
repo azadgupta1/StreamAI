@@ -26,6 +26,8 @@ const setupSocketIO = (server) => {
     },
   });
 
+  global.io = io;
+
   io.on("connection", (socket) => {
 
     /* ================= JOIN STREAM ================= */

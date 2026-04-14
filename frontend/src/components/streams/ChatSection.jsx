@@ -21,7 +21,7 @@ const tabs = [
   "Analysis",
 ];
 
-const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount }) => {
+const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount, videoRef }) => {
   const [activeTab, setActiveTab] = useState("Comments");
   const [chats, setChats] = useState([]);
   // const [viewerCount, setViewerCount] = useState(0);
@@ -136,7 +136,7 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount }
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-sm break-words"
+                  className="text-sm wrap-break-word"
                 >
                   <span
                     style={{ color: getUserColor(c.username) }}
@@ -158,7 +158,7 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount }
 
         {activeTab === "Live Transcript" && (
           <div className="flex-1 overflow-y-auto p-4 text-gray-400">
-            <LiveTranscript />
+            <LiveTranscript socket={socket} streamId={streamId} videoRef={videoRef} />
           </div>
         )}
 

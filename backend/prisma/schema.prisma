@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,85 +8,84 @@ datasource db {
 }
 
 model User {
-  user_id        String          @id @default(cuid())
-  username       String          @unique
-  email          String          @unique
-  password       String
+  user_id         String  @id @default(cuid())
+  username        String  @unique
+  email           String  @unique
+  password        String
   profile_picture String?
-  bio            String?
-  role           String          @default("viewer")
+  bio             String?
+  role            String  @default("viewer")
 
-  is_blocked     Boolean         @default(false)
-  warning_count  Int             @default(0)
-  timeout_until  DateTime?
+  is_blocked    Boolean   @default(false)
+  warning_count Int       @default(0)
+  timeout_until DateTime?
 
-  created_at     DateTime        @default(now())
-  updated_at     DateTime        @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  streams        Stream[]
-  followers      Follower[]      @relation("FollowedBy")
-  following      Follower[]      @relation("Follows")
-  subscriptions  Subscription[]  @relation("UserSubscriptions")
-  streamers      Subscription[]  @relation("StreamerSubscriptions")
-  stream_keys    StreamKey[]
-  likes          Like[]
-  chats          Chat[]
+  streams       Stream[]
+  followers     Follower[]     @relation("FollowedBy")
+  following     Follower[]     @relation("Follows")
+  subscriptions Subscription[] @relation("UserSubscriptions")
+  streamers     Subscription[] @relation("StreamerSubscriptions")
+  stream_keys   StreamKey[]
+  likes         Like[]
+  chats         Chat[]
 
-  moderation_logs ModerationLog[]  
+  moderation_logs ModerationLog[]
 }
-
 
 model Stream {
-  stream_id       String        @id @default(cuid())
-  title           String
-  description     String?
-  category_id     String
-  streamer_id     String
-  is_live         Boolean       @default(false)
-  viewer_count    Int           @default(0)
-  thumbnail       String?       @default("placeholder_url")
-  started_at      DateTime?
-  ended_at        DateTime?
+  stream_id    String    @id @default(cuid())
+  title        String
+  description  String?
+  category_id  String
+  streamer_id  String
+  stream_key   String?
+  is_live      Boolean   @default(false)
+  viewer_count Int       @default(0)
+  thumbnail    String?   @default("placeholder_url")
+  started_at   DateTime?
+  ended_at     DateTime?
 
-  category        Category      @relation(fields: [category_id], references: [category_id])
-  streamer        User          @relation(fields: [streamer_id], references: [user_id])
-  likes           Like[]
-  chats           Chat[]
+  category Category @relation(fields: [category_id], references: [category_id])
+  streamer User     @relation(fields: [streamer_id], references: [user_id])
+  likes    Like[]
+  chats    Chat[]
 
-  moderation_logs ModerationLog[]   
+  moderation_logs ModerationLog[]
+  Transcript      Transcript[]
 }
 
-
 model Category {
-  category_id     String        @id @default(cuid()) // Use String for consistency
-  name            String        @unique
-  description     String?
-  streams         Stream[]      
+  category_id String   @id @default(cuid()) // Use String for consistency
+  name        String   @unique
+  description String?
+  streams     Stream[]
 }
 
 model Follower {
-  follower_id     String        // User who is following
-  followee_id     String        // User being followed
-  followed_at     DateTime      @default(now())
+  follower_id String // User who is following
+  followee_id String // User being followed
+  followed_at DateTime @default(now())
 
   // Relations
-  follower        User          @relation("Follows", fields: [follower_id], references: [user_id])
-  followee        User          @relation("FollowedBy", fields: [followee_id], references: [user_id])
+  follower User @relation("Follows", fields: [follower_id], references: [user_id])
+  followee User @relation("FollowedBy", fields: [followee_id], references: [user_id])
 
   // Unique constraint on the combination of follower_id and followee_id
   @@id([follower_id, followee_id]) // Composite primary key
 }
 
-
 model Like {
-  like_id         String        @id @default(cuid())
-  user_id         String
-  stream_id       String
-  liked_at        DateTime      @default(now())
+  like_id   String   @id @default(cuid())
+  user_id   String
+  stream_id String
+  liked_at  DateTime @default(now())
 
   // Relations
-  user            User          @relation(fields: [user_id], references: [user_id])
-  stream          Stream        @relation(fields: [stream_id], references: [stream_id])
+  user   User   @relation(fields: [user_id], references: [user_id])
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
 }
 
 model Subscription {
@@ -97,52 +95,55 @@ model Subscription {
   subscribed_at   DateTime @default(now())
   is_active       Boolean  @default(true)
 
-  user            User     @relation("UserSubscriptions", fields: [user_id], references: [user_id])
-  streamer        User     @relation("StreamerSubscriptions", fields: [streamer_id], references: [user_id])
+  user     User @relation("UserSubscriptions", fields: [user_id], references: [user_id])
+  streamer User @relation("StreamerSubscriptions", fields: [streamer_id], references: [user_id])
 }
 
 model Chat {
-  chat_id         String        @id @default(cuid())
-  stream_id       String
-  user_id         String
-  message         String
-  sent_at         DateTime      @default(now())
+  chat_id   String   @id @default(cuid())
+  stream_id String
+  user_id   String
+  message   String
+  sent_at   DateTime @default(now())
 
-  stream          Stream        @relation(fields: [stream_id], references: [stream_id])
-  user            User          @relation(fields: [user_id], references: [user_id])
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
+  user   User   @relation(fields: [user_id], references: [user_id])
 
   @@index([stream_id, sent_at])
 }
 
-
 model StreamKey {
-  key_id     String   @id @default(cuid())
+  key_id      String   @id @default(cuid())
   streamer_id String
-  stream_key String   @unique
-  created_at DateTime @default(now())
-  streamer   User     @relation(fields: [streamer_id], references: [user_id])
+  stream_key  String   @unique
+  created_at  DateTime @default(now())
+  streamer    User     @relation(fields: [streamer_id], references: [user_id])
 }
 
 model ModerationLog {
-  log_id      String   @id @default(cuid())
-  user_id     String
-  stream_id   String
-  reason      String
-  created_at  DateTime @default(now())
+  log_id     String   @id @default(cuid())
+  user_id    String
+  stream_id  String
+  reason     String
+  created_at DateTime @default(now())
 
-  user        User     @relation(fields: [user_id], references: [user_id])
-  stream      Stream   @relation(fields: [stream_id], references: [stream_id])
+  user   User   @relation(fields: [user_id], references: [user_id])
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
 }
 
+model Transcript {
+  transcript_id String   @id @default(cuid())
+  stream_id     String
+  text          String
+  is_final      Boolean
+  start_time    Float?
+  end_time      Float?
+  created_at    DateTime @default(now())
 
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
 
-
-
-
-
-
-
-
+  @@index([stream_id, created_at])
+}
 
 // model Follower {
 //   follower_id     String        @id @default(cuid())
