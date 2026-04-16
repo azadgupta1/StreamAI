@@ -27,7 +27,7 @@ class TranscriptionService extends EventEmitter {
   startPipeline() {
     if (this.isStopped) return;
 
-    const streamUrl = `http://localhost:8080/live/${this.streamKey}.m3u8`;
+    const streamUrl = `${process.env.STREAM_URL}/${this.streamKey}.m3u8`;
     console.log("🔗 Using stream URL:", streamUrl);
 
     const request = {
