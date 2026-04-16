@@ -1,0 +1,22 @@
+{
+  "name": "StreamAI",
+  "short_name": "StreamAI",
+  "description": "Stream AI is an AI-powered platform that enhances live streaming by analyzing audio, and chat in real time to provide features like captions, summaries, and content moderation. It improves viewer experience, accessibility, and stream safety without changing the original live broadcast.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#5af04f",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

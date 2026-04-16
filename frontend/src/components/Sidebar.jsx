@@ -120,36 +120,6 @@
 
 // export default Sidebar;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { FaFire, FaVideo, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -173,12 +143,27 @@ const Sidebar = () => {
 
   // Dummy recommended categories with square images
   const recommendedCategories = [
-    { name: "Gaming", avatar: "https://picsum.photos/32?random=1", followers: "12.3K" },
-    { name: "Music", avatar: "https://picsum.photos/32?random=2", followers: "8.7K" },
-    { name: "Art", avatar: "https://picsum.photos/32?random=3", followers: "5.2K" },
-    { name: "Esports", avatar: "https://picsum.photos/32?random=4", followers: "20.1K" },
+    {
+      name: "Gaming",
+      avatar: "https://picsum.photos/32?random=1",
+      followers: "12.3K",
+    },
+    {
+      name: "Music",
+      avatar: "https://picsum.photos/32?random=2",
+      followers: "8.7K",
+    },
+    {
+      name: "Art",
+      avatar: "https://picsum.photos/32?random=3",
+      followers: "5.2K",
+    },
+    {
+      name: "Esports",
+      avatar: "https://picsum.photos/32?random=4",
+      followers: "20.1K",
+    },
   ];
-
 
   return (
     <div
@@ -246,7 +231,9 @@ const Sidebar = () => {
               {expanded && (
                 <div className="ml-3 text-sm flex flex-col">
                   <span>{cat.name}</span>
-                  <span className="text-gray-400 text-xs">{cat.followers} followers</span>
+                  <span className="text-gray-400 text-xs">
+                    {cat.followers} followers
+                  </span>
                 </div>
               )}
             </div>

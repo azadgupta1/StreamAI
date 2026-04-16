@@ -31,7 +31,7 @@ const HomePage = () => {
           <Sidebar />
         </div>
 
-        <div className="flex-1 overflow-y-auto h-screen">
+        <div className="flex-1 h-screen overflow-y-auto">
           <Home />
         </div>
       </div>

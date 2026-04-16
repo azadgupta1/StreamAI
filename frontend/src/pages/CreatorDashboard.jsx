@@ -15,39 +15,39 @@ const CreatorDashboard = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-        case "goLive":
+      case "goLive":
         return <GoLivePanel />;
-        case "streams":
+      case "streams":
         return <StreamsPanel />;
-        case "analytics":
+      case "analytics":
         return <AnalyticsPanel />;
-        case "followers":
+      case "followers":
         return <FollowersPanel />;
-        case "profile":
+      case "profile":
         return <ProfilePanel />;
-        case "stream":
+      case "stream":
         return <StreamPanel />;
-        case "settings":
+      case "settings":
         return <SettingsPanel />;
-        default:
+      default:
         return <OverviewCards />;
     }
   };
 
-
   return (
-
     <div className="bg-black text-white min-h-screen relative">
-        
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeTab={activeTab} setActiveTab={setActiveTab}/>
-      
-
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
       <div
-    className={`flex-1 p-6 transition-all duration-300 ${
-            sidebarOpen ? "ml-64" : "ml-20"
-            }`}
-        >
+        className={`flex-1 p-6 transition-all duration-300 ${
+          sidebarOpen ? "ml-64" : "ml-20"
+        }`}
+      >
         {renderContent()}
       </div>
     </div>

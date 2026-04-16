@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { motion } from "framer-motion";
+import { FaMicrophone } from "react-icons/fa";
 
 // ❌ Remove: const socket = io(...)  — no longer creating its own socket
 

@@ -116,29 +116,31 @@ const Hero = () => {
 
         <button
           onClick={() => navigate(`/player/${activeStream.id}`)}
-          className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition"
+          className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
         >
           Watch Now
         </button>
       </div>
 
       {/* ================= BOTTOM CAROUSEL ================= */}
-      <div className="absolute bottom-10 hidden sm:block w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-20">
+      <div className="absolute bottom-10 hidden sm:block w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-10">
         <Slider {...settings}>
           {liveStreams.map((stream, index) => (
             <div key={stream.id} className="py-4">
               <div
-                className={`w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
+                className={`relative w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
                 ${
                   index === activeIndex
-                    ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110"
-                    : "opacity-60 hover:opacity-100 hover:scale-101"
+                    ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110 z-20"
+                    : "opacity-60 hover:opacity-100 hover:scale-101 z-0"
                 }`}
               >
                 <video
                   src={stream.video}
                   muted
-                  className="w-full h-40 object-cover"
+                  className={`w-full h-40 object-cover transition-all duration-500 ${
+                    index === activeIndex ? "" : "blur-[1px]"
+                  }`}
                 />
               </div>
             </div>

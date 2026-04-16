@@ -115,14 +115,14 @@ const StreamStatsWithSubscribe = ({ viewerCount, streamerId }) => {
               <img
                 src={streamer.profile_picture}
                 alt="profile"
-                className="w-20 h-20 rounded-full object-cover border-2 border-neutral-700"
+                className="size-16 rounded-full object-cover border-2 border-neutral-700"
               />
 
-              {isLive && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-red-600 text-xs px-3 py-[2px] rounded-full font-semibold">
+              {/* {isLive && (
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-red-600 text-xs px-1 py-[2px] rounded-full font-semibold">
                   LIVE
                 </span>
-              )}
+              )} */}
             </div>
 
             <h2 className="text-xl font-bold">{streamer.username}</h2>

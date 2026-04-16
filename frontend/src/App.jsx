@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import toast from "react-hot-toast";
 import ExploreLiveStreamPage from "./pages/ExploreLiveStreamPage";
 import CreatorDashboard from "./pages/CreatorDashboard";
+import AboutPage from "./pages/AboutPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoggedInRoute from "./components/LoggedInRoute";
@@ -49,7 +50,7 @@ const App = () => {
             }
           />
           <Route path="/explore" element={<ExploreLiveStreamPage />} />
-          {/* <Route path="/dashboard" element={<CreatorDashboard />} /> */}
+          <Route path="/about" element={<AboutPage />} />
           <Route
             path="/dashboard"
             element={
