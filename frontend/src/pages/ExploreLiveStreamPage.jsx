@@ -168,14 +168,41 @@ const ExploreLiveStreamPage = () => {
         <h2 className="text-white text-2xl font-semibold mb-4">{title}</h2>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {visibleStreams.map((stream) => (
             <StreamCard key={`${title}-${stream.id}`} stream={stream} />
           ))}
-        </div>
+        </div> */}
+
+        {/* Mobile Horizontal Scroll + Desktop Grid */}
+<div className="flex gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 sm:overflow-visible">
+
+  {visibleStreams.map((stream) => (
+    <div
+      key={`${title}-${stream.id}`}
+      className="min-w-[260px] sm:min-w-0 flex-shrink-0"
+    >
+      <StreamCard stream={stream} />
+    </div>
+  ))}
+
+  {/* Mobile Show More Card */}
+  {!expanded && (
+    <div className="min-w-[260px] flex-shrink-0 sm:hidden flex items-center justify-center">
+      <button
+        onClick={() => setExpanded(true)}
+        className="w-full h-40 rounded-lg border border-zinc-700 text-gray-400 hover:text-white hover:border-zinc-500 transition flex items-center justify-center"
+      >
+        Show More →
+      </button>
+    </div>
+  )}
+
+</div>
 
         {/* Divider + Button */}
-        <div className="flex items-center gap-4 mt-5">
+        {/* <div className="flex items-center gap-4 mt-5"> */}
+        <div className="hidden sm:flex items-center gap-4 mt-5">
           <div className="flex-1 h-px bg-zinc-800" />
 
           <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import { FaCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -59,15 +59,11 @@ const Hero = () => {
     responsive: [
       {
         breakpoint: 1024,
-        settings: {
-          centerPadding: "100px",
-        },
+        settings: { centerPadding: "100px" },
       },
       {
         breakpoint: 640,
-        settings: {
-          centerPadding: "40px",
-        },
+        settings: { centerPadding: "40px" },
       },
     ],
   };
@@ -75,111 +71,471 @@ const Hero = () => {
   const activeStream = liveStreams[activeIndex];
 
   return (
-    <div className="relative h-90 sm:min-h-150 w-full bg-[#0E0E10] overflow-hidden">
-      {/* ================= BACKGROUND VIDEO ================= */}
-      <video
-        key={activeStream.video}
-        src={activeStream.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-      />
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/30"></div>
-
-      {/* ================= HEADER CONTENT ================= */}
-      <div className="absolute top-20 md:top-28 left-6 md:left-20 z-20 max-w-2xl">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-red-600 px-3 py-1 rounded text-xs font-semibold flex items-center gap-2">
-            <FaCircle className="text-white text-[8px]" />
-            LIVE
-          </div>
-
-          <span className="text-white text-sm">{activeStream.viewers}</span>
-        </div>
-
-        <h2 className="text-white text-md md:text-4xl font-semibold mb-4">
-          {activeStream.title}
-        </h2>
-
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={activeStream.avatar}
-            alt="avatar"
-            className="w-12 h-12 rounded-full border-2 border-[#9147FF]"
-          />
-          <p className="text-white font-medium">{activeStream.streamer}</p>
-        </div>
-
-        <button
-          onClick={() => navigate(`/player/${activeStream.id}`)}
-          className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
-        >
-          Watch Now
-        </button>
-      </div>
-
-      {/* ================= BOTTOM CAROUSEL ================= */}
-      <div className="absolute bottom-10 hidden sm:block w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-10">
-        <Slider {...settings}>
-          {liveStreams.map((stream, index) => (
-            <div key={stream.id} className="py-4">
+    <>
+      {/* ================= MOBILE VIEW (Horizontal Scroll Cards) ================= */}
+      <div className="sm:hidden bg-black px-4 py-4">
+        <div className="flex gap-4 overflow-x-auto pb-2">
+          {liveStreams.map((stream) => (
+            <div key={stream.id} className="min-w-[280px] flex-shrink-0">
               <div
-                className={`relative w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
-                ${
-                  index === activeIndex
-                    ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110 z-20"
-                    : "opacity-60 hover:opacity-100 hover:scale-101 z-0"
-                }`}
+                onClick={() => navigate(`/player/${stream.id}`)}
+                className="group cursor-pointer"
               >
-                <video
-                  src={stream.video}
-                  muted
-                  className={`w-full h-40 object-cover transition-all duration-500 ${
-                    index === activeIndex ? "" : "blur-[1px]"
-                  }`}
-                />
+                <div className="relative overflow-hidden rounded-lg">
+                  <video
+                    src={stream.video}
+                    className="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+
+                  <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    LIVE
+                  </span>
+
+                  <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                    {stream.viewers}
+                  </span>
+                </div>
+
+                <div className="flex gap-3 mt-3">
+                  <img
+                    src={stream.avatar}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+
+                  <div>
+                    <h3 className="text-white text-sm font-semibold line-clamp-1">
+                      {stream.title}
+                    </h3>
+                    <p className="text-gray-400 text-xs">{stream.streamer}</p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
-        </Slider>
+        </div>
       </div>
-    </div>
+
+      {/* ================= DESKTOP HERO (UNCHANGED) ================= */}
+      <div className="hidden sm:block relative h-90 sm:min-h-150 w-full bg-[#0E0E10] overflow-hidden">
+        {/* Background Video */}
+        <video
+          key={activeStream.video}
+          src={activeStream.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+        />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/30"></div>
+
+        {/* Header Content */}
+        <div className="absolute top-20 md:top-28 left-6 md:left-20 z-20 max-w-2xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-red-600 px-3 py-1 rounded text-xs font-semibold flex items-center gap-2">
+              <FaCircle className="text-white text-[8px]" />
+              LIVE
+            </div>
+
+            <span className="text-white text-sm">{activeStream.viewers}</span>
+          </div>
+
+          <h2 className="text-white text-md md:text-4xl font-semibold mb-4">
+            {activeStream.title}
+          </h2>
+
+          <div className="flex items-center gap-4 mb-6">
+            <img
+              src={activeStream.avatar}
+              alt="avatar"
+              className="w-12 h-12 rounded-full border-2 border-[#9147FF]"
+            />
+            <p className="text-white font-medium">{activeStream.streamer}</p>
+          </div>
+
+          <button
+            onClick={() => navigate(`/player/${activeStream.id}`)}
+            className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
+          >
+            Watch Now
+          </button>
+        </div>
+
+        {/* Bottom Carousel */}
+        <div className="absolute bottom-10 w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-10">
+          <Slider {...settings}>
+            {liveStreams.map((stream, index) => (
+              <div key={stream.id} className="py-4">
+                <div
+                  className={`relative w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
+                  ${
+                    index === activeIndex
+                      ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110 z-20"
+                      : "opacity-60 hover:opacity-100 hover:scale-101 z-0"
+                  }`}
+                >
+                  <video
+                    src={stream.video}
+                    muted
+                    className={`w-full h-40 object-cover transition-all duration-500 ${
+                      index === activeIndex ? "" : "blur-[1px]"
+                    }`}
+                  />
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
+    </>
   );
 };
 
-const NextArrow = ({ onClick }) => {
-  return (
-    <div
-      onClick={onClick}
-      className="absolute right-6 top-1/2 -translate-y-1/2 z-30
-                 w-12 h-12 flex items-center justify-center
-                 bg-black/60 hover:bg-black/80
-                 rounded-full cursor-pointer transition"
-    >
-      <span className="text-[#5af04f] text-2xl font-bold">›</span>
-    </div>
-  );
-};
+const NextArrow = ({ onClick }) => (
+  <div
+    onClick={onClick}
+    className="absolute right-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center bg-black/60 hover:bg-black/80 rounded-full cursor-pointer transition"
+  >
+    <span className="text-[#5af04f] text-2xl font-bold">›</span>
+  </div>
+);
 
-const PrevArrow = ({ onClick }) => {
-  return (
-    <div
-      onClick={onClick}
-      className="absolute left-6 top-1/2 -translate-y-1/2 z-30
-                 w-12 h-12 flex items-center justify-center
-                 bg-black/60 hover:bg-black/80
-                 rounded-full cursor-pointer transition"
-    >
-      <span className="text-[#5af04f] text-2xl font-bold">‹</span>
-    </div>
-  );
-};
+const PrevArrow = ({ onClick }) => (
+  <div
+    onClick={onClick}
+    className="absolute left-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center bg-black/60 hover:bg-black/80 rounded-full cursor-pointer transition"
+  >
+    <span className="text-[#5af04f] text-2xl font-bold">‹</span>
+  </div>
+);
 
 export default Hero;
+
+
+
+
+
+
+// import React, { useEffect, useState } from "react";
+// import Slider from "react-slick";
+// import { FaCircle } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+
+// const liveStreams = [
+//   {
+//     id: 1,
+//     title: "Code with AI",
+//     streamer: "CodeDev",
+//     viewers: "2.3K viewers",
+//     video: "/preview/1.webm",
+//     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
+//   },
+//   {
+//     id: 2,
+//     title: "AI Fitness Trainer",
+//     streamer: "FitBot",
+//     viewers: "1.1K viewers",
+//     video: "/preview/2.webm",
+//     avatar: "https://randomuser.me/api/portraits/women/22.jpg",
+//   },
+//   {
+//     id: 3,
+//     title: "Movie Talk Live",
+//     streamer: "CinemaPro",
+//     viewers: "3.5K viewers",
+//     video: "/preview/3.webm",
+//     avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+//   },
+//   {
+//     id: 4,
+//     title: "Gaming Legends",
+//     streamer: "ProGamerX",
+//     viewers: "5.7K viewers",
+//     video: "/preview/4.mp4",
+//     avatar: "https://randomuser.me/api/portraits/men/44.jpg",
+//   },
+// ];
+
+// const Hero = () => {
+//   const [activeIndex, setActiveIndex] = useState(0);
+//   const navigate = useNavigate();
+
+//   const settings = {
+//     centerMode: true,
+//     centerPadding: "200px",
+//     slidesToShow: 1,
+//     infinite: true,
+//     autoplay: true,
+//     autoplaySpeed: 4000,
+//     speed: 800,
+//     arrows: true,
+//     nextArrow: <NextArrow />,
+//     prevArrow: <PrevArrow />,
+//     beforeChange: (_, next) => setActiveIndex(next),
+//     responsive: [
+//       {
+//         breakpoint: 1024,
+//         settings: {
+//           centerPadding: "100px",
+//         },
+//       },
+//       {
+//         breakpoint: 640,
+//         settings: {
+//           centerPadding: "40px",
+//         },
+//       },
+//     ],
+//   };
+
+//   const activeStream = liveStreams[activeIndex];
+
+//   // return (
+//   //   <div className="relative h-90 sm:min-h-150 w-full bg-[#0E0E10] overflow-hidden">
+//   //     {/* ================= BACKGROUND VIDEO ================= */}
+//   //     <video
+//   //       key={activeStream.video}
+//   //       src={activeStream.video}
+//   //       autoPlay
+//   //       muted
+//   //       loop
+//   //       playsInline
+//   //       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+//   //     />
+
+//   //     {/* Overlay */}
+//   //     <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/30"></div>
+
+//   //     {/* ================= HEADER CONTENT ================= */}
+//   //     <div className="absolute top-20 md:top-28 left-6 md:left-20 z-20 max-w-2xl">
+//   //       <div className="flex items-center gap-3 mb-4">
+//   //         <div className="bg-red-600 px-3 py-1 rounded text-xs font-semibold flex items-center gap-2">
+//   //           <FaCircle className="text-white text-[8px]" />
+//   //           LIVE
+//   //         </div>
+
+//   //         <span className="text-white text-sm">{activeStream.viewers}</span>
+//   //       </div>
+
+//   //       <h2 className="text-white text-md md:text-4xl font-semibold mb-4">
+//   //         {activeStream.title}
+//   //       </h2>
+
+//   //       <div className="flex items-center gap-4 mb-6">
+//   //         <img
+//   //           src={activeStream.avatar}
+//   //           alt="avatar"
+//   //           className="w-12 h-12 rounded-full border-2 border-[#9147FF]"
+//   //         />
+//   //         <p className="text-white font-medium">{activeStream.streamer}</p>
+//   //       </div>
+
+//   //       <button
+//   //         onClick={() => navigate(`/player/${activeStream.id}`)}
+//   //         className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
+//   //       >
+//   //         Watch Now
+//   //       </button>
+//   //     </div>
+
+//   //     {/* ================= BOTTOM CAROUSEL ================= */}
+//   //     <div className="absolute bottom-10 hidden sm:block w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-10">
+//   //       <Slider {...settings}>
+//   //         {liveStreams.map((stream, index) => (
+//   //           <div key={stream.id} className="py-4">
+//   //             <div
+//   //               className={`relative w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
+//   //               ${
+//   //                 index === activeIndex
+//   //                   ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110 z-20"
+//   //                   : "opacity-60 hover:opacity-100 hover:scale-101 z-0"
+//   //               }`}
+//   //             >
+//   //               <video
+//   //                 src={stream.video}
+//   //                 muted
+//   //                 className={`w-full h-40 object-cover transition-all duration-500 ${
+//   //                   index === activeIndex ? "" : "blur-[1px]"
+//   //                 }`}
+//   //               />
+//   //             </div>
+//   //           </div>
+//   //         ))}
+//   //       </Slider>
+//   //     </div>
+//   //   </div>
+//   // );
+
+// return (
+//   <>
+//     {/* ================= MOBILE VIEW (HORIZONTAL SCROLL) ================= */}
+//     <div className="sm:hidden bg-black px-4 py-4">
+//       <div className="flex gap-4 overflow-x-auto pb-2">
+//         {liveStreams.map((stream) => (
+//           <div key={stream.id} className="min-w-[280px] flex-shrink-0">
+//             <div
+//               onClick={() => navigate(`/player/${stream.id}`)}
+//               className="group cursor-pointer"
+//             >
+//               {/* Video Preview */}
+//               <div className="relative overflow-hidden rounded-lg">
+//                 <video
+//                   src={stream.video}
+//                   className="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+//                   autoPlay
+//                   muted
+//                   loop
+//                   playsInline
+//                 />
+
+//                 {/* LIVE Badge */}
+//                 <span className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+//                   LIVE
+//                 </span>
+
+//                 {/* Viewer Count */}
+//                 <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+//                   {stream.viewers}
+//                 </span>
+//               </div>
+
+//               {/* Stream Info */}
+//               <div className="flex gap-3 mt-3">
+//                 <img
+//                   src={stream.avatar}
+//                   alt="avatar"
+//                   className="w-10 h-10 rounded-full object-cover"
+//                 />
+
+//                 <div>
+//                   <h3 className="text-white text-sm font-semibold line-clamp-1">
+//                     {stream.title}
+//                   </h3>
+//                   <p className="text-gray-400 text-xs">{stream.streamer}</p>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+
+//     {/* ================= DESKTOP HERO ================= */}
+//     <div className="hidden sm:block relative h-90 sm:min-h-150 w-full bg-[#0E0E10] overflow-hidden">
+//       {/* Background Video */}
+//       <video
+//         key={activeStream.video}
+//         src={activeStream.video}
+//         autoPlay
+//         muted
+//         loop
+//         playsInline
+//         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+//       />
+
+//       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/30"></div>
+
+//       {/* Header Content */}
+//       <div className="absolute top-20 md:top-28 left-6 md:left-20 z-20 max-w-2xl">
+//         <div className="flex items-center gap-3 mb-4">
+//           <div className="bg-red-600 px-3 py-1 rounded text-xs font-semibold flex items-center gap-2">
+//             <FaCircle className="text-white text-[8px]" />
+//             LIVE
+//           </div>
+
+//           <span className="text-white text-sm">{activeStream.viewers}</span>
+//         </div>
+
+//         <h2 className="text-white text-md md:text-4xl font-semibold mb-4">
+//           {activeStream.title}
+//         </h2>
+
+//         <div className="flex items-center gap-4 mb-6">
+//           <img
+//             src={activeStream.avatar}
+//             alt="avatar"
+//             className="w-12 h-12 rounded-full border-2 border-[#9147FF]"
+//           />
+//           <p className="text-white font-medium">{activeStream.streamer}</p>
+//         </div>
+
+//         <button
+//           onClick={() => navigate(`/player/${activeStream.id}`)}
+//           className="bg-[#5af04f] hover:bg-[#7b35d9] px-6 py-3 rounded-md text-black font-semibold transition cursor-pointer"
+//         >
+//           Watch Now
+//         </button>
+//       </div>
+
+//       {/* Bottom Carousel */}
+//       <div className="absolute bottom-10 hidden sm:block w-[85%] xl:w-[65%] 2xl:w-[50%] px-4 md:px-16 z-10">
+//         <Slider {...settings}>
+//           {liveStreams.map((stream, index) => (
+//             <div key={stream.id} className="py-4">
+//               <div
+//                 className={`relative w-60 rounded-xl overflow-hidden transition-all duration-500 cursor-pointer
+//                 ${
+//                   index === activeIndex
+//                     ? "scale-105 border-2 border-[#5af04f] opacity-100 hover:scale-110 z-20"
+//                     : "opacity-60 hover:opacity-100 hover:scale-101 z-0"
+//                 }`}
+//               >
+//                 <video
+//                   src={stream.video}
+//                   muted
+//                   className={`w-full h-40 object-cover transition-all duration-500 ${
+//                     index === activeIndex ? "" : "blur-[1px]"
+//                   }`}
+//                 />
+//               </div>
+//             </div>
+//           ))}
+//         </Slider>
+//       </div>
+//     </div>
+//   </>
+// );
+
+
+// };
+
+// const PrevArrow = ({ onClick }) => {
+//   return (
+//     <div
+//       onClick={onClick}
+//       className="absolute left-6 top-1/2 -translate-y-1/2 z-30
+//                  w-12 h-12 flex items-center justify-center
+//                  bg-black/60 hover:bg-black/80
+//                  rounded-full cursor-pointer transition"
+//     >
+//       <span className="text-[#5af04f] text-2xl font-bold">‹</span>
+//     </div>
+//   );
+// };
+
+// export default Hero;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React from "react";
 // import Slider from "react-slick";

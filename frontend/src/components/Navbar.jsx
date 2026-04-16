@@ -75,7 +75,7 @@ const Navbar = ({
   return (
     <>
       {/* ================= NAVBAR ================= */}
-      <nav className="w-full h-14 py-4 bg-[#0E0E10] border-b border-[#26262C] flex items-center justify-between px-3 md:px-6 sticky top-0 z-40">
+      <nav className="w-full h-20 md:h-14 py-4 bg-[#0E0E10] border-b border-[#26262C] flex items-center justify-between px-3 md:px-6 sticky top-0 z-40">
         {/* LEFT */}
         <div className="flex items-center gap-4 md:gap-6">
           <Link to="/">
@@ -99,7 +99,7 @@ const Navbar = ({
         </div>
 
         {/* SEARCH (Tablet + Desktop) */}
-        <div className="hidden md:flex flex-1 justify-center px-4">
+        <div className="md:flex flex-1 justify-center px-12 md:py-4">
           <div className="flex w-full max-w-md">
             <input
               type="text"
@@ -111,6 +111,8 @@ const Navbar = ({
             </button>
           </div>
         </div>
+
+        
 
         {/* RIGHT */}
         <div className="flex items-center gap-4 md:gap-6">
@@ -180,12 +182,35 @@ const Navbar = ({
           )}
 
           {/* Mobile Menu Button */}
-          <button
+          {/* <button
             onClick={() => setSidebarOpen(true)}
             className="md:hidden text-[#9147FF] cursor-pointer"
           >
             <FiMenu size={22} />
-          </button>
+          </button> */}
+
+          {/* Mobile Right Section */}
+          <div className="md:hidden">
+            {authUser ? (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="w-9 h-9 rounded-full bg-[#5af04f] flex items-center justify-center hover:scale-105 transition"
+              >
+                <FaUser className="text-black text-sm" />
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setDefaultTab("login");
+                  setAuthModalOpen(true);
+                }}
+                className="bg-[#53FC18] text-black px-4 py-2 rounded-md text-sm font-semibold"
+              >
+                Log In
+              </button>
+            )}
+          </div>
+
         </div>
       </nav>
 
@@ -274,6 +299,28 @@ const NavLink = ({ to, label }) => (
 );
 
 export default Navbar;
+
+
+
+
+
+
+
+{/* <div className="flex justify-center px-2 md:px-4 w-full">
+          <div className="flex w-full max-w-[220px] md:max-w-md">
+            <input
+              type="text"
+              placeholder="Search streams..."
+              className="w-full bg-[#18181B] text-sm px-2 md:px-4 py-2 rounded-l-md border border-[#26262C] focus:outline-none focus:border-[#9147FF]"
+            />
+            <button className="px-2 md:px-4 bg-[#26262C] border border-l-0 border-[#26262C] rounded-r-md hover:bg-[#333]">
+              <FiSearch />
+            </button>
+          </div>
+        </div> */}
+
+
+
 
 // import React, { useState, useEffect } from "react";
 // import { Link, useNavigate, useLocation } from "react-router-dom";

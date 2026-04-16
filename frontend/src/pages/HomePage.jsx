@@ -27,7 +27,7 @@ const HomePage = () => {
       />
 
       <div className="flex flex-1 relative">
-        <div className="sticky top-16 z-10">
+        <div className="hidden md:block sticky top-16 z-10">
           <Sidebar />
         </div>
 
@@ -40,6 +40,9 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
 
 // import React from "react";
 // import Home from "../components/Home";

@@ -95,20 +95,33 @@ const Explore = () => {
       Live channels we think you’ll like
     </h2>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"> */}
+    <div className="flex gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 sm:overflow-visible">
       {streams.length === 0 ? (
         <p className="text-white col-span-full text-center">
           No live streams available.
         </p>
       ) : (
+        // streams
+        //   .filter((s) => s.isLive)
+        //   .map((stream) => (
+        //     <div
+        //       key={stream.id}
+        //       onClick={() => navigate(`/player/${stream.id}`)}
+        //       className="group cursor-pointer"
+        //     >
         streams
-          .filter((s) => s.isLive)
-          .map((stream) => (
+        .filter((s) => s.isLive)
+        .map((stream) => (
+          <div
+            key={stream.id}
+            className="min-w-[260px] sm:min-w-0 flex-shrink-0"
+          >
             <div
-              key={stream.id}
               onClick={() => navigate(`/player/${stream.id}`)}
               className="group cursor-pointer"
             >
+
               {/* Thumbnail */}
               <div className="relative overflow-hidden rounded-lg">
                 <img
@@ -150,8 +163,9 @@ const Explore = () => {
                   </p>
                 </div>
               </div>
-            </div>
-          ))
+                  </div>
+                </div>
+            ))
       )}
     </div>
         {/* Bottom Divider */}
