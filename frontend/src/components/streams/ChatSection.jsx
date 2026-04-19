@@ -181,7 +181,7 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount, 
 
           {activeTab === "Summary" && (
             <div className="flex-1 overflow-y-auto p-3 text-gray-400">
-              <Summary />
+              <Summary socket={socket} streamId={streamId} />
             </div>
           )}
 

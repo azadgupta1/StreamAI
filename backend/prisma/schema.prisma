@@ -55,6 +55,7 @@ model Stream {
 
   moderation_logs ModerationLog[]
   Transcript      Transcript[]
+  StreamSummary   StreamSummary?
 }
 
 model Category {
@@ -97,6 +98,15 @@ model Subscription {
 
   user     User @relation("UserSubscriptions", fields: [user_id], references: [user_id])
   streamer User @relation("StreamerSubscriptions", fields: [streamer_id], references: [user_id])
+}
+
+model StreamSummary {
+  id         String   @id @default(cuid())
+  stream_id  String   @unique
+  summary    String
+  updated_at DateTime
+
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
 }
 
 model Chat {
