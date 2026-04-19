@@ -6,6 +6,9 @@ import { IoClose } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { Lock, Unlock } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+
 
 const AuthModal = ({ open, onClose, defaultTab }) => {
   const { login, register, isLoggingIn, isRegistering, authUser } =
@@ -226,13 +229,38 @@ const AuthModal = ({ open, onClose, defaultTab }) => {
                 : "Create Account"}
           </button>
 
-          <button
+          {/* <button
             type="button"
             className="w-full flex flex-wrap items-center justify-center gap-4 border border-[#26262C] py-2 rounded-md hover:bg-[#26262C] transition cursor=pointer"
           >
             <FaGoogle />
             <span>Continue with Google</span>
-          </button>
+          </button> */}
+
+          <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              try {
+                const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/google`, {
+                  token: credentialResponse.credential,
+                });
+
+                // store user in Zustand
+                useAuthStore.getState().loginSuccess(res.data);
+
+                toast.success("Logged in with Google 🚀");
+              } catch (err) {
+                console.error(err);
+                toast.error("Google login failed");
+              }
+            }}
+            onError={() => {
+              toast.error("Google login failed");
+            }}
+          />
+        </div>
+
+
         </form>
         {/* Bottom Toggle Text */}
         <div className="text-center text-sm mt-5 text-gray-400">

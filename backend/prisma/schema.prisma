@@ -11,7 +11,7 @@ model User {
   user_id         String  @id @default(cuid())
   username        String  @unique
   email           String  @unique
-  password        String
+  password        String? // should be optional because we are using OAuth too
   profile_picture String?
   bio             String?
   role            String  @default("viewer")
@@ -134,7 +134,8 @@ model ModerationLog {
 model Transcript {
   transcript_id String   @id @default(cuid())
   stream_id     String
-  text          String
+  // text          String
+  text          String   @db.Text
   is_final      Boolean
   start_time    Float?
   end_time      Float?

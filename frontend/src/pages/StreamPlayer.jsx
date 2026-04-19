@@ -89,9 +89,17 @@ const StreamPlayer = () => {
     }
   }, [hlsUrl]);
 
+  // if (loading) {
+  //   return <div className="text-white p-10">Loading stream...</div>;
+  // }
+
   if (loading) {
-    return <div className="text-white p-10">Loading stream...</div>;
-  }
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="w-12 h-12 border-4 border-gray-300 border-t-white rounded-full animate-spin"></div>
+    </div>
+  );
+}
 
   return (
     <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
@@ -103,6 +111,8 @@ const StreamPlayer = () => {
         </div>
 
         <div className="flex flex-1 min-w-0 flex-col lg:flex-row overflow-hidden">
+
+
           <div className="w-full lg:w-[70%] min-w-0 h-[55vh] sm:h-[60vh] lg:h-full overflow-y-auto">
             <VideoSection
               videoRef={videoRef}
@@ -112,6 +122,7 @@ const StreamPlayer = () => {
               hlsUrl={hlsUrl}
             />
           </div>
+
 
           <div className="w-full lg:w-[30%] min-w-0 h-[45vh] sm:h-[40vh] lg:h-full border-t lg:border-t-0 lg:border-l border-gray-800 overflow-hidden">
             <ChatSection
@@ -123,6 +134,8 @@ const StreamPlayer = () => {
               videoRef={videoRef}
           />
           </div>
+
+
         </div>
       </div>
     </div>
@@ -130,6 +143,15 @@ const StreamPlayer = () => {
 };
 
 export default StreamPlayer;
+
+
+
+
+
+
+
+
+
 
 // import React, {useState, useEffect, useRef } from "react";
 // import { useParams } from "react-router-dom";

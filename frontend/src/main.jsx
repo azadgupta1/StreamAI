@@ -3,36 +3,98 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "react-hot-toast";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-    <Toaster
-      toastOptions={{
-        duration: 4000,
-        style: {
-          background: "#0E0E10",
-          color: "#fff",
-          border: "1px solid #53FC18",
-          borderRadius: "25px",
-          padding: "10px",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-        },
-        success: {
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <App />
+      <Toaster
+        toastOptions={{
+          duration: 4000,
           style: {
-            color: "#53FC18",
+            background: "#0E0E10",
+            color: "#fff",
+            border: "1px solid #53FC18",
+            borderRadius: "25px",
+            padding: "10px",
+            paddingLeft: "20px",
+            paddingRight: "20px",
           },
-        },
-        error: {
-          style: {
-            color: "#ef4444",
+          success: {
+            style: {
+              color: "#53FC18",
+            },
           },
-        },
-      }}
-    />
-  </StrictMode>,
+          error: {
+            style: {
+              color: "#ef4444",
+            },
+          },
+        }}
+      />
+    </GoogleOAuthProvider>
+  </StrictMode>
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { StrictMode } from "react";
+// import { createRoot } from "react-dom/client";
+// import "./index.css";
+// import App from "./App.jsx";
+// import { Toaster } from "react-hot-toast";
+
+// createRoot(document.getElementById("root")).render(
+//   <StrictMode>
+//     <App />
+//     <Toaster
+//       toastOptions={{
+//         duration: 4000,
+//         style: {
+//           background: "#0E0E10",
+//           color: "#fff",
+//           border: "1px solid #53FC18",
+//           borderRadius: "25px",
+//           padding: "10px",
+//           paddingLeft: "20px",
+//           paddingRight: "20px",
+//         },
+//         success: {
+//           style: {
+//             color: "#53FC18",
+//           },
+//         },
+//         error: {
+//           style: {
+//             color: "#ef4444",
+//           },
+//         },
+//       }}
+//     />
+//   </StrictMode>,
+// );
+
+
+
+
+
+
 // import { StrictMode } from "react";
 // import { createRoot } from "react-dom/client";
 // import "./index.css";

@@ -93,3 +93,69 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ error: "Server error, please try again later!" });
   }
 };
+
+
+
+
+
+
+
+
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleAuth = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const { email, name, picture } = payload;
+
+    let user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    // Create user if not exists
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email,
+          username: email.split("@")[0] + "_" + Date.now(),
+          password: null,
+          profile_picture: picture,
+        },
+      });
+    }
+
+    // Block check (good practice)
+    if (user.is_blocked) {
+      return res.status(403).json({ message: "User is blocked" });
+    }
+
+    const jwtToken = jwt.sign(
+      { userId: user.user_id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.status(200).json({
+      user: {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+      },
+      token: jwtToken,
+    });
+
+  } catch (error) {
+    console.error("Google auth error:", error);
+    res.status(401).json({ message: "Invalid Google token" });
+  }
+};
