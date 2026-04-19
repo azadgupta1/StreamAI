@@ -1,11 +1,13 @@
 import TranscriptionService from "./transcriptionService.js";
 import SummarizationService from "./summarizationService.js";
+import TimestampService from "./timestampService.js"; // 🔥
 import prisma from "../src/config/prismaClient.js";
 
 class TranscriptionManager {
   constructor() {
     this.streams = new Map();
-    this.summarizers = new Map(); // 🔥 track summarizers separately
+    this.summarizers = new Map();
+    this.timestampers = new Map(); // 🔥
   }
 
   start(streamId, streamKey) {
@@ -48,27 +50,28 @@ class TranscriptionManager {
     service.start();
     this.streams.set(streamId, service);
 
-    // 🔥 Start summarizer
     const summarizer = new SummarizationService(streamId);
     summarizer.start();
     this.summarizers.set(streamId, summarizer);
+
+    // 🔥 Start timestamp service
+    const timestamper = new TimestampService(streamId);
+    timestamper.start();
+    this.timestampers.set(streamId, timestamper);
 
     console.log(`🎤 Started transcription: ${streamId}`);
   }
 
   stop(streamId) {
     const service = this.streams.get(streamId);
-    if (service) {
-      service.stop();
-      this.streams.delete(streamId);
-    }
+    if (service) { service.stop(); this.streams.delete(streamId); }
 
-    // 🔥 Stop summarizer
     const summarizer = this.summarizers.get(streamId);
-    if (summarizer) {
-      summarizer.stop();
-      this.summarizers.delete(streamId);
-    }
+    if (summarizer) { summarizer.stop(); this.summarizers.delete(streamId); }
+
+    // 🔥 Stop timestamper
+    const timestamper = this.timestampers.get(streamId);
+    if (timestamper) { timestamper.stop(); this.timestampers.delete(streamId); }
 
     console.log(`🛑 Stopped transcription: ${streamId}`);
   }

@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 
-// Get all likes for a specific stream
+// Get all summaries for a specific stream
 router.get('/:streamId', getSummary);
 
 export default router;

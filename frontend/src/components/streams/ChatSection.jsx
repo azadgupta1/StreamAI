@@ -167,15 +167,15 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount, 
             </div>
           )}
 
-        {activeTab === "Live Transcript" && (
-          <div className="flex-1 overflow-y-auto p-4 text-gray-400">
-            <LiveTranscript socket={socket} streamId={streamId} videoRef={videoRef} />
-          </div>
-        )}
+          {activeTab === "Live Transcript" && (
+            <div className="flex-1 overflow-y-auto p-4 text-gray-400">
+              <LiveTranscript socket={socket} streamId={streamId} videoRef={videoRef} />
+            </div>
+          )}
 
           {activeTab === "Live Timestamps" && (
-            <div className="flex-1 overflow-y-auto p-3 text-gray-400">
-              <LiveTimestamp />
+            <div className="flex-1 overflow-y-auto p-4 text-gray-400">
+              <LiveTimestamp socket={socket} streamId={streamId} videoRef={videoRef} />
             </div>
           )}
 

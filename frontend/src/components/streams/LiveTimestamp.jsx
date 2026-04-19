@@ -43,65 +43,75 @@
 // };
 
 // export default LiveTimestampList;
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaClock } from "react-icons/fa";
+import { axiosInstance } from "../../lib/axios";
 
-const sampleTimestamps = [
-  { label: "Welcome to the live stream!", time: "00:01" },
-  { label: "Intro and today's agenda", time: "00:05" },
-  { label: "Main content begins", time: "00:10" },
-  { label: "Special announcement", time: "00:15" },
-  { label: "Q&A segment starts", time: "00:20" },
-  { label: "Subscriber shoutouts", time: "00:25" },
-  { label: "Wrapping up — thanks for watching!", time: "00:30" },
-];
+const LiveTimestamp = ({ socket, streamId, videoRef }) => {
+  const [timestamps, setTimestamps] = useState([]);
+  const [newId, setNewId] = useState(null); // highlight newest
 
-const LiveTimestamp = () => {
-  const [visible, setVisible] = useState([]);
-
+  // Load existing timestamps for late viewers
   useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setVisible((prev) => [
-        ...prev,
-        sampleTimestamps[i % sampleTimestamps.length],
-      ]);
-      i++;
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+    if (!streamId) return;
+    axiosInstance.get(`/timestamps/${streamId}`)
+      .then(res => setTimestamps(res.data))
+      .catch(() => {});
+  }, [streamId]);
+
+  // Listen for new live timestamps
+  useEffect(() => {
+    if (!socket || !streamId) return;
+
+    const handle = (data) => {
+      const entry = { ...data, id: crypto.randomUUID() };
+      setTimestamps(prev => [...prev, entry]);
+      setNewId(entry.id);
+      setTimeout(() => setNewId(null), 2000);
+    };
+
+    socket.on("live_timestamp", handle);
+    return () => socket.off("live_timestamp", handle);
+  }, [socket, streamId]);
+
+  const seekTo = (seconds) => {
+    if (videoRef?.current) {
+      videoRef.current.currentTime = seconds;
+      videoRef.current.play();
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-3 h-full">
-      <div className="flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-[#5af04f] animate-pulse shadow-[0_0_6px_#5af04f]" />
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-          Live Timestamps
-        </span>
-        <FaClock size={10} className="text-[#5af04f] ml-auto" />
-      </div>
+    <div className="p-4 space-y-2">
+      <h3 className="text-white font-semibold text-sm mb-3">Key Moments</h3>
 
-      <div className="flex flex-col gap-1.5 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-800">
-        <AnimatePresence>
-          {visible.map((ts, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              transition={{ duration: 0.25 }}
-              className="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-lg px-3 py-2"
-            >
-              <span className="text-[#5af04f] font-mono text-[10px] font-bold shrink-0">
-                {ts.time}
-              </span>
-              <span className="text-gray-300 text-xs">{ts.label}</span>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      {!timestamps.length && (
+        <p className="text-gray-600 text-sm italic">
+          Key moments will appear as the stream progresses...
+        </p>
+      )}
+
+      <AnimatePresence>
+        {timestamps.map((ts, i) => (
+          <motion.button
+            key={ts.id ?? i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0 }}
+            onClick={() => seekTo(ts.time_seconds)}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors
+              ${newId === ts.id
+                ? "bg-green-900/40 border border-green-500/50"
+                : "bg-gray-900 hover:bg-gray-800 border border-transparent"
+              }`}
+          >
+            <span className="text-green-400 font-mono text-xs shrink-0">
+              {ts.time_label}
+            </span>
+            <span className="text-gray-300 text-sm truncate">{ts.label}</span>
+          </motion.button>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

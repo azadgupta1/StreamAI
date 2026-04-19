@@ -56,6 +56,7 @@ model Stream {
   moderation_logs ModerationLog[]
   Transcript      Transcript[]
   StreamSummary   StreamSummary?
+  StreamTimestamp StreamTimestamp[]
 }
 
 model Category {
@@ -105,6 +106,17 @@ model StreamSummary {
   stream_id  String   @unique
   summary    String
   updated_at DateTime
+
+  stream Stream @relation(fields: [stream_id], references: [stream_id])
+}
+
+model StreamTimestamp {
+  id           String   @id @default(cuid())
+  stream_id    String
+  label        String
+  time_seconds Float
+  time_label   String // "MM:SS"
+  created_at   DateTime @default(now())
 
   stream Stream @relation(fields: [stream_id], references: [stream_id])
 }
