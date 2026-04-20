@@ -7,18 +7,6 @@
   </url>
 
   <url>
-    <loc>https://www.streamai.in/login</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.streamai.in/register</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
     <loc>https://www.streamai.in/explore</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

@@ -120,6 +120,8 @@ const setupSocketIO = (server) => {
               },
             });
 
+
+
             if (action === "timeout") {
               return socket.emit(
                 "message_error",
@@ -148,6 +150,10 @@ const setupSocketIO = (server) => {
           ...savedMessage,
           username,
         });
+
+            // Inside send_message handler, after saving message, add:
+            const commentCount = await prisma.chat.count({ where: { stream_id } });
+            io.to(stream_id).emit("analytics_update", { type: "comment", total: commentCount });
 
       } catch (error) {
         console.error("Message error:", error);

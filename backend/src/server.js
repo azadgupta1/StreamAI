@@ -13,6 +13,7 @@ import srsRoutes from "./routes/srsRoutes.js";
 import summaryRoutes from "./routes/summaryRoutes.js";
 import timestampRoutes from "./routes/timestampRoutes.js";
 import transcriptRoutes from "./routes/transcriptRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoute.js";
 import setupSocketIO from "./config/socket.js";
 import cors from 'cors';
 import http from 'http';
@@ -50,6 +51,7 @@ app.use("/api/srs", srsRoutes);
 app.use("/api/summary", summaryRoutes);
 app.use("/api/timestamps", timestampRoutes);
 app.use("/api/transcripts", transcriptRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 
 app.get('/', (req, res)=>{

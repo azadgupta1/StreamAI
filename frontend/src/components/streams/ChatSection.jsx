@@ -186,8 +186,8 @@ const ChatSection = ({ streamId, userId, username, viewerCount, setViewerCount, 
           )}
 
           {activeTab === "Analysis" && (
-            <div className="flex-1 overflow-y-auto p-3 text-gray-400">
-              <Analysis />
+            <div className="flex-1 overflow-y-auto p-4 text-gray-400">
+              <Analysis socket={socket} streamId={streamId} viewerCount={viewerCount} />
             </div>
           )}
         </motion.div>

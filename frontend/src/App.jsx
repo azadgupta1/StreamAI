@@ -32,14 +32,14 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route
+          {/* <Route
             path="/register"
             element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
           />
           <Route
             path="/login"
             element={!authUser ? <LoginPage /> : <Navigate to="/" />}
-          />
+          /> */}
           <Route path="/player/:id" element={<StreamPlayer />} />
           <Route
             path="/profile"
